@@ -15,8 +15,14 @@ client.configure(feathers.authentication({
 new Vue({
     el: '#app',
     data: {
-        client: {name: 'Arturo', about: 'Programando'},
-        users: [{name: 'Gonzalo', imageUrl: 'www.google.com'}, {name: 'Fernando', imageUrl: 'www.google.com'}],
+        client: {name: 'Arturo', pictureUrl: 'https://randomuser.me/api/portraits/men/80.jpg', about: 'Programando'},
+        users: [
+            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
+            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
+            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
+            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
+            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
+        ],
         messages: [],
     }
 });

@@ -1,0 +1,252 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600');
+
+/*Colors*/
+
+$brand-color: #F0433A;
+$brand-color-dark: #a73737;
+
+$light-grey: #f8f8f8;
+$dark-grey: #eee;
+$white: #fff;
+
+/*Typography*/
+
+$text-dark: #484c55;
+$text-black: #222;
+
+$light-icon: #9c9c9c;
+
+$brand-font: 'Source Sans Pro', sans-serif;
+
+/*Miscelaneous*/
+
+$lighter-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2);
+$light-box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.2);
+
+$light-border-radius: 2px;
+
+$light-border: 1px solid $dark-grey;
+
+$light-padding: 3px;
+$regular-padding: 5px;
+$strong-padding: 10px;
+
+$light-margin: 3px;
+$regular-margin: 5px;
+$strong-margin: 10px;
+
+$light-transition: .1s ease;
+
+/*Widths and heights*/
+
+$app-wrapper-gradient-height: 133px;
+
+$main-panel-desktop-height: 95%;
+$main-panel-desktop-max-width: 1100px;
+$main-panel-tablet-height: 100%;
+$main-panel-tablet-width: 100%;
+
+$sidebar-desktop-width: 400px;
+$sidebar-table-width: 30%;
+$sidebar-header-height: 60px;
+
+$client-picture-width: 50px;
+$client-picture-height: 50px;
+
+$user-item-height: 75px;
+
+$user-item-picture-height: 50px;
+$user-item-picture-width: 50px;
+
+$user-new-message-height: 7px;
+$user-new-message-width: 7px;
+
+$chat-wrapper-desktop-width: 700px;
+$chat-wrapper-tablet-width: 70%;
+$chat-header-height: $sidebar-header-height;
+
+/*Media queries*/
+
+$tablet: "only screen and (max-width : 1150px)";
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: $brand-font;
+}
+
+.app-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $light-grey;
+    background: linear-gradient(to bottom, $brand-color-dark 0%, $brand-color-dark $app-wrapper-gradient-height, $dark-grey $app-wrapper-gradient-height);
+    width: 100%;
+    height: 100%;
+    color: $text-dark;
+}
+
+#app{
+    @media #{$tablet}{
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.main-panel{
+    display: flex;
+    flex-direction: row;
+
+    background-color: $white;
+    box-shadow: $light-box-shadow;
+
+    height: $main-panel-desktop-height;
+    max-width: $main-panel-desktop-max-width;
+
+    border-radius: $light-border-radius;
+
+    overflow: hidden;
+
+    @media #{$tablet}{
+        max-width: none;
+        height: $main-panel-tablet-height;
+        width: $main-panel-tablet-width;
+    }
+
+    .sidebar{
+        display: flex;
+        flex-direction: column;
+        width: $sidebar-desktop-width;
+
+        border-right: $light-border;
+
+        @media #{$tablet}{
+            width: $sidebar-table-width;
+        }
+
+        .sidebar-header{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            height: $sidebar-header-height;
+
+            background-color: $light-grey;
+
+            padding: $regular-padding;
+
+            border-bottom: $light-border;
+
+            .client-picture{
+                height: $client-picture-height;
+                width: $client-picture-width;
+                background-size: cover;
+                border-radius: $client-picture-height;
+            }
+
+            .client-body{
+                display: flex;
+                flex-direction: column;
+                margin-left: $strong-margin;
+                justify-content: center;
+
+                .client-name{
+                    font-weight: 600;
+                }
+
+                .client-about{
+
+                }
+            }
+
+            .client-modify{
+                color: $light-icon;
+            }
+        }
+
+        .sidebar-body{
+
+            .user-list{
+                display: flex;
+                flex-direction: column;
+
+                .user-item{
+                    position: relative;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    height: $user-item-height;
+
+                    border-bottom: $light-border;
+                    padding: $regular-padding;
+
+                    transition: $light-transition;
+
+                    &:hover{
+                        cursor: pointer;
+                        background-color: $light-grey;
+                    }
+
+                    .user-picture{
+                        height: $user-item-picture-height;
+                        width: $user-item-picture-width;
+                        background-size: cover;
+                        border-radius: $user-item-picture-width;
+                    }
+
+                    .user-body{
+                        display: flex;
+                        flex-direction: column;
+                        margin-left: $strong-margin;
+
+                        .user-name{
+                            font-weight: 600;
+                        }
+
+                        .user-about{
+
+                        }
+                    }
+
+                    .user-new-message{
+                        position: absolute;
+                        right: 10px;
+                        top: 10px;
+                        width: $user-new-message-width;
+                        height: $user-new-message-height;
+                        background-color: $brand-color;
+                        border-radius: $user-new-message-height;
+                        box-shadow: $lighter-box-shadow;
+                    }
+                }
+            }
+        }
+    }
+
+    .chat-wrapper{
+        display: flex;
+        flex-direction: column;
+        width: $chat-wrapper-desktop-width;
+
+        @media #{$tablet}{   
+            width: $chat-wrapper-tablet-width;
+        }
+
+        .chat-header{
+            height: $chat-header-height;
+            background-color: $light-grey;
+        }
+
+        .chat-body{
+
+            .chat{
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
+        .chat-input{
+
+        }
+    }
+}
