@@ -9,12 +9,19 @@ $light-grey: #f8f8f8;
 $dark-grey: #eee;
 $white: #fff;
 
+$scrollbar-color: #999999;
+
+$local-message-color: #ffcac9;
+$foreign-message-color: $light-grey;
+
 /*Typography*/
 
+$text-light: #6e7480;
 $text-dark: #484c55;
 $text-black: #222;
 
 $light-icon: #9c9c9c;
+$dark-icon: #757575;
 
 $brand-font: 'Source Sans Pro', sans-serif;
 
@@ -24,18 +31,32 @@ $lighter-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2);
 $light-box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.2);
 
 $light-border-radius: 2px;
+$regular-border-radius: 5px;
 
 $light-border: 1px solid $dark-grey;
 
 $light-padding: 3px;
 $regular-padding: 5px;
 $strong-padding: 10px;
+$stronger-padding: 20px;
 
 $light-margin: 3px;
 $regular-margin: 5px;
 $strong-margin: 10px;
 
 $light-transition: .1s ease;
+
+$icon-font-size: 1.6em;
+
+$splash-name-font-size: 4em;
+
+$chat-textbox-font-size: 1.3em;
+$chat-action-button-font-size: 1.3em;
+
+$message-text-font-size: 1.1em;
+$message-timestamp-font-size: .8em;
+
+$message-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.2);
 
 /*Widths and heights*/
 
@@ -65,6 +86,14 @@ $chat-wrapper-desktop-width: 700px;
 $chat-wrapper-tablet-width: 70%;
 $chat-header-height: $sidebar-header-height;
 
+$chat-input-height: $chat-header-height;
+
+$splash-logo-height: 100px;
+$splash-logo-width: 100px;
+
+$action-button-width: 45px;
+$action-button-height: $action-button-width;
+
 /*Media queries*/
 
 $tablet: "only screen and (max-width : 1150px)";
@@ -81,7 +110,9 @@ $tablet: "only screen and (max-width : 1150px)";
     justify-content: center;
     align-items: center;
     background-color: $light-grey;
-    background: linear-gradient(to bottom, $brand-color-dark 0%, $brand-color-dark $app-wrapper-gradient-height, $dark-grey $app-wrapper-gradient-height);
+    /*background: linear-gradient(to bottom, $brand-color-dark 0%, $brand-color-dark $app-wrapper-gradient-height, $dark-grey $app-wrapper-gradient-height);*/
+    background-image: url(https://wallpaperscraft.com/image/giau_pass_italy_alps_118374_3840x2400.jpg);
+    background-size: cover;
     width: 100%;
     height: 100%;
     color: $text-dark;
@@ -98,7 +129,6 @@ $tablet: "only screen and (max-width : 1150px)";
     display: flex;
     flex-direction: row;
 
-    background-color: $white;
     box-shadow: $light-box-shadow;
 
     height: $main-panel-desktop-height;
@@ -118,8 +148,7 @@ $tablet: "only screen and (max-width : 1150px)";
         display: flex;
         flex-direction: column;
         width: $sidebar-desktop-width;
-
-        border-right: $light-border;
+        background-color: $white;
 
         @media #{$tablet}{
             width: $sidebar-table-width;
@@ -129,7 +158,7 @@ $tablet: "only screen and (max-width : 1150px)";
             display: flex;
             flex-direction: row;
             align-items: center;
-            height: $sidebar-header-height;
+            min-height: $sidebar-header-height;
 
             background-color: $light-grey;
 
@@ -137,31 +166,51 @@ $tablet: "only screen and (max-width : 1150px)";
 
             border-bottom: $light-border;
 
-            .client-picture{
-                height: $client-picture-height;
-                width: $client-picture-width;
-                background-size: cover;
-                border-radius: $client-picture-height;
-            }
+            justify-content: space-between;
+            border-right: $light-border;
 
-            .client-body{
+            .item{
                 display: flex;
-                flex-direction: column;
-                margin-left: $strong-margin;
-                justify-content: center;
+                flex-direction: row;
 
-                .client-name{
-                    font-weight: 600;
+                .client-picture{
+                    height: $client-picture-height;
+                    width: $client-picture-width;
+                    background-size: cover;
+                    border-radius: $client-picture-height;
                 }
-
-                .client-about{
-
+    
+                .client-body{
+                    display: flex;
+                    flex-direction: column;
+                    margin-left: $strong-margin;
+                    justify-content: center;
+    
+                    .client-name{
+                        font-weight: 600;
+                    }
+    
+                    .client-about{
+    
+                    }
                 }
-            }
+    
+                .client-modify{
+                    position: relative;
+                    color: $light-icon;
+                    right: 6px;
+                    font-size: $icon-font-size;
 
-            .client-modify{
-                color: $light-icon;
-            }
+                    svg{
+                        margin-left: $light-margin;
+
+                        &:hover{
+                            cursor: pointer;
+                            color: $dark-icon;
+                        }
+                    }
+                }
+            }            
         }
 
         .sidebar-body{
@@ -169,13 +218,15 @@ $tablet: "only screen and (max-width : 1150px)";
             .user-list{
                 display: flex;
                 flex-direction: column;
+                overflow-y: auto;
+                max-height: calc(100% - #{$sidebar-header-height});
 
                 .user-item{
                     position: relative;
                     display: flex;
                     flex-direction: row;
                     align-items: center;
-                    height: $user-item-height;
+                    min-height: $user-item-height;
 
                     border-bottom: $light-border;
                     padding: $regular-padding;
@@ -210,7 +261,7 @@ $tablet: "only screen and (max-width : 1150px)";
 
                     .user-new-message{
                         position: absolute;
-                        right: 10px;
+                        right: 14px;
                         top: 10px;
                         width: $user-new-message-width;
                         height: $user-new-message-height;
@@ -233,20 +284,200 @@ $tablet: "only screen and (max-width : 1150px)";
         }
 
         .chat-header{
-            height: $chat-header-height;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            min-height: $chat-header-height;
             background-color: $light-grey;
+            border-bottom: $light-border;
+            padding: $regular-padding;
+
+            .receiver-picture{
+                height: $user-item-picture-height;
+                width: $user-item-picture-width;
+                background-size: cover;
+                border-radius: $user-item-picture-width;
+            }
+
+            .receiver-body{
+                display: flex;
+                flex-direction: column;
+                margin-left: $strong-margin;
+
+                .receiver-name{
+                    font-weight: 600;
+                }
+
+                .receiver-last-connection{
+
+                }
+            }
         }
 
         .chat-body{
+            position: relative;
+            max-height: calc(100% - #{$chat-header-height} - #{$chat-input-height});
+            overflow-y: auto;
 
             .chat{
                 display: flex;
                 flex-direction: column;
+                padding: $stronger-padding;
+
+                .message{
+                    position: relative;
+                    width: fit-content;
+                    display: flex;
+                    flex-direction: column;
+                    background-color: $white;
+                    padding: $regular-padding;
+                    box-shadow: $message-shadow;
+                    margin-bottom: $light-margin;
+                    border-radius: $light-border-radius;
+
+                    .text{
+                        font-size: $message-text-font-size;
+                    }
+
+                    .timestamp{
+                        font-size: $message-timestamp-font-size;
+                        align-self: flex-end;
+                        color: $text-light;
+                    }
+                }
+
+                .foreign{
+                    background-color: $foreign-message-color;
+
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        width: 0;
+                        height: 0;
+                        left: -9px;
+                        top: 0px;
+                        border: 5px solid;
+                        border-color: $foreign-message-color $foreign-message-color transparent transparent;
+                    }
+                }
+
+                .local{
+                    align-self: flex-end;
+                    background-color: $local-message-color;
+
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        width: 0;
+                        height: 0;
+                        right: -9px;
+                        top: 0px;
+                        border: 5px solid;
+                        border-color: $local-message-color transparent transparent $local-message-color;
+                    }
+                }
+            }
+
+            .splash-screen{
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                display: none;
+
+                .app-name{
+                    font-size: $splash-name-font-size;
+                    color: $brand-color;
+                    font-weight: 600;
+                }
+
+                .app-logo{
+                    background-image: url(../assets/splash.png);
+                    height: $splash-logo-height;
+                    width: $splash-logo-width;
+                    background-size: cover;
+                }
+            }
+
+            .visible{
+                display: block;
             }
         }
 
         .chat-input{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            min-height: $chat-input-height;
+            background-color: $light-grey;
+            border-top: $light-border;
+            padding: $regular-padding;
+            border-left: $light-border;
 
+            .textbox{
+                position: relative;
+                width: calc(100% - #{$action-button-width} - (#{$regular-padding} * 2) - 20px);
+                height: $action-button-width;
+                padding: $strong-padding;
+                font-size: $chat-textbox-font-size;
+                border-radius: $regular-border-radius;
+                border:none;
+                outline: none;
+
+                &:focus{
+                    box-shadow: inset $light-box-shadow;
+                }
+            }
+
+            .action-button{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: $action-button-width;
+                height: $action-button-height;
+                border-radius: $action-button-width;
+                border: none;
+                background-color: $brand-color;
+                color: $white;
+                font-size: $chat-action-button-font-size;
+                transition: $light-transition;
+                outline: none;
+
+                &:hover{
+                    cursor: pointer;
+                    box-shadow: $light-box-shadow;
+                }
+
+                &:active{
+                  transform: scale(.95);
+                  box-shadow: none;
+                }
+
+                &:focus{
+                    box-shadow: $light-box-shadow;
+                }
+            }
         }
     }
+}
+
+/*Scrollbars*/
+
+.scrollbar::-webkit-scrollbar-track
+{
+	background-color: transparent;
+}
+
+.scrollbar::-webkit-scrollbar
+{
+	width: 5px;
+	background-color: transparent;
+}
+
+.scrollbar::-webkit-scrollbar-thumb
+{
+	background-color: $scrollbar-color;
 }

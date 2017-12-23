@@ -15,7 +15,9 @@
   justify-content: center;
   align-items: center;
   background-color: #f8f8f8;
-  background: linear-gradient(to bottom, #a73737 0%, #a73737 133px, #eee 133px);
+  /*background: linear-gradient(to bottom, $brand-color-dark 0%, $brand-color-dark $app-wrapper-gradient-height, $dark-grey $app-wrapper-gradient-height);*/
+  background-image: url(https://wallpaperscraft.com/image/giau_pass_italy_alps_118374_3840x2400.jpg);
+  background-size: cover;
   width: 100%;
   height: 100%;
   color: #484c55; }
@@ -28,7 +30,6 @@
 .main-panel {
   display: flex;
   flex-direction: row;
-  background-color: #fff;
   box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.2);
   height: 95%;
   max-width: 1100px;
@@ -45,7 +46,7 @@
   display: flex;
   flex-direction: column;
   width: 400px;
-  border-right: 1px solid #eee; }
+  background-color: #fff; }
 
 @media only screen and (max-width: 1150px) {
   .main-panel .sidebar {
@@ -55,39 +56,57 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 60px;
+  min-height: 60px;
   background-color: #f8f8f8;
   padding: 5px;
-  border-bottom: 1px solid #eee; }
+  border-bottom: 1px solid #eee;
+  justify-content: space-between;
+  border-right: 1px solid #eee; }
 
-.main-panel .sidebar .sidebar-header .client-picture {
+.main-panel .sidebar .sidebar-header .item {
+  display: flex;
+  flex-direction: row; }
+
+.main-panel .sidebar .sidebar-header .item .client-picture {
   height: 50px;
   width: 50px;
   background-size: cover;
   border-radius: 50px; }
 
-.main-panel .sidebar .sidebar-header .client-body {
+.main-panel .sidebar .sidebar-header .item .client-body {
   display: flex;
   flex-direction: column;
   margin-left: 10px;
   justify-content: center; }
 
-.main-panel .sidebar .sidebar-header .client-body .client-name {
+.main-panel .sidebar .sidebar-header .item .client-body .client-name {
   font-weight: 600; }
 
-.main-panel .sidebar .sidebar-header .client-modify {
-  color: #9c9c9c; }
+.main-panel .sidebar .sidebar-header .item .client-modify {
+  position: relative;
+  color: #9c9c9c;
+  right: 6px;
+  font-size: 1.6em; }
+
+.main-panel .sidebar .sidebar-header .item .client-modify svg {
+  margin-left: 3px; }
+
+.main-panel .sidebar .sidebar-header .item .client-modify svg:hover {
+  cursor: pointer;
+  color: #757575; }
 
 .main-panel .sidebar .sidebar-body .user-list {
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: calc(100% - 60px); }
 
 .main-panel .sidebar .sidebar-body .user-list .user-item {
   position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 75px;
+  min-height: 75px;
   border-bottom: 1px solid #eee;
   padding: 5px;
   transition: 0.1s ease; }
@@ -112,7 +131,7 @@
 
 .main-panel .sidebar .sidebar-body .user-list .user-item .user-new-message {
   position: absolute;
-  right: 10px;
+  right: 14px;
   top: 10px;
   width: 7px;
   height: 7px;
@@ -130,9 +149,163 @@
     width: 70%; } }
 
 .main-panel .chat-wrapper .chat-header {
-  height: 60px;
-  background-color: #f8f8f8; }
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: 60px;
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #eee;
+  padding: 5px; }
+
+.main-panel .chat-wrapper .chat-header .receiver-picture {
+  height: 50px;
+  width: 50px;
+  background-size: cover;
+  border-radius: 50px; }
+
+.main-panel .chat-wrapper .chat-header .receiver-body {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px; }
+
+.main-panel .chat-wrapper .chat-header .receiver-body .receiver-name {
+  font-weight: 600; }
+
+.main-panel .chat-wrapper .chat-body {
+  position: relative;
+  max-height: calc(100% - 60px - 60px);
+  overflow-y: auto; }
 
 .main-panel .chat-wrapper .chat-body .chat {
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+  padding: 20px; }
+
+.main-panel .chat-wrapper .chat-body .chat .message {
+  position: relative;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  padding: 5px;
+  box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.2);
+  margin-bottom: 3px;
+  border-radius: 2px; }
+
+.main-panel .chat-wrapper .chat-body .chat .message .text {
+  font-size: 1.1em; }
+
+.main-panel .chat-wrapper .chat-body .chat .message .timestamp {
+  font-size: 0.8em;
+  align-self: flex-end;
+  color: #6e7480; }
+
+.main-panel .chat-wrapper .chat-body .chat .foreign {
+  background-color: #f8f8f8; }
+
+.main-panel .chat-wrapper .chat-body .chat .foreign::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -9px;
+  top: 0px;
+  border: 5px solid;
+  border-color: #f8f8f8 #f8f8f8 transparent transparent; }
+
+.main-panel .chat-wrapper .chat-body .chat .local {
+  align-self: flex-end;
+  background-color: #ffcac9; }
+
+.main-panel .chat-wrapper .chat-body .chat .local::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  right: -9px;
+  top: 0px;
+  border: 5px solid;
+  border-color: #ffcac9 transparent transparent #ffcac9; }
+
+.main-panel .chat-wrapper .chat-body .splash-screen {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  display: none; }
+
+.main-panel .chat-wrapper .chat-body .splash-screen .app-name {
+  font-size: 4em;
+  color: #F0433A;
+  font-weight: 600; }
+
+.main-panel .chat-wrapper .chat-body .splash-screen .app-logo {
+  background-image: url(../assets/splash.png);
+  height: 100px;
+  width: 100px;
+  background-size: cover; }
+
+.main-panel .chat-wrapper .chat-body .visible {
+  display: block; }
+
+.main-panel .chat-wrapper .chat-input {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 60px;
+  background-color: #f8f8f8;
+  border-top: 1px solid #eee;
+  padding: 5px;
+  border-left: 1px solid #eee; }
+
+.main-panel .chat-wrapper .chat-input .textbox {
+  position: relative;
+  width: calc(100% - 45px - (5px * 2) - 20px);
+  height: 45px;
+  padding: 10px;
+  font-size: 1.3em;
+  border-radius: 5px;
+  border: none;
+  outline: none; }
+
+.main-panel .chat-wrapper .chat-input .textbox:focus {
+  box-shadow: inset 0px 0px 3px 3px rgba(0, 0, 0, 0.2); }
+
+.main-panel .chat-wrapper .chat-input .action-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 45px;
+  border: none;
+  background-color: #F0433A;
+  color: #fff;
+  font-size: 1.3em;
+  transition: 0.1s ease;
+  outline: none; }
+
+.main-panel .chat-wrapper .chat-input .action-button:hover {
+  cursor: pointer;
+  box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.2); }
+
+.main-panel .chat-wrapper .chat-input .action-button:active {
+  transform: scale(0.95);
+  box-shadow: none; }
+
+.main-panel .chat-wrapper .chat-input .action-button:focus {
+  box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.2); }
+
+/*Scrollbars*/
+.scrollbar::-webkit-scrollbar-track {
+  background-color: transparent; }
+
+.scrollbar::-webkit-scrollbar {
+  width: 5px;
+  background-color: transparent; }
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #999999; }
