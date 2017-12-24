@@ -43,6 +43,7 @@
     width: 100%; } }
 
 .main-panel .sidebar {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 400px;
@@ -115,6 +116,9 @@
   cursor: pointer;
   background-color: #f8f8f8; }
 
+.main-panel .sidebar .sidebar-body .user-list .user-item.selected {
+  background-color: #eee; }
+
 .main-panel .sidebar .sidebar-body .user-list .user-item .user-picture {
   height: 50px;
   width: 50px;
@@ -138,6 +142,48 @@
   background-color: #F0433A;
   border-radius: 7px;
   box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2); }
+
+.main-panel .sidebar .sliding-panel {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin-left: -100%;
+  transition: 0.5s ease; }
+
+.main-panel .sidebar .sliding-panel.visible {
+  margin-left: 0%; }
+
+.main-panel .sidebar .sliding-panel .sliding-header {
+  display: flex;
+  flex-direction: row;
+  min-height: 60px;
+  background-color: #f8f8f8;
+  align-items: center;
+  padding: 5px;
+  border-bottom: 1px solid #eee;
+  justify-content: space-between;
+  border-right: 1px solid #eee; }
+
+.main-panel .sidebar .sliding-panel .sliding-header .panel-title {
+  font-size: 1.5em;
+  margin: 0 auto; }
+
+.main-panel .sidebar .sliding-panel .sliding-header .close-panel {
+  position: relative;
+  color: #9c9c9c;
+  right: 6px;
+  font-size: 1.6em; }
+
+.main-panel .sidebar .sliding-panel .sliding-header .close-panel svg {
+  margin-left: 3px; }
+
+.main-panel .sidebar .sliding-panel .sliding-header .close-panel svg:hover {
+  cursor: pointer;
+  color: #757575; }
+
+.main-panel .sidebar .sliding-panel .sliding-body {
+  background-color: #fff;
+  height: calc(100% - 60px); }
 
 .main-panel .chat-wrapper {
   display: flex;
@@ -171,9 +217,12 @@
 .main-panel .chat-wrapper .chat-header .receiver-body .receiver-name {
   font-weight: 600; }
 
+.main-panel .chat-wrapper .chat-header .receiver-body .receiver-last-connection {
+  text-transform: capitalize; }
+
 .main-panel .chat-wrapper .chat-body {
   position: relative;
-  max-height: calc(100% - 60px - 60px);
+  min-height: calc(100% - 60px - 60px);
   overflow-y: auto; }
 
 .main-panel .chat-wrapper .chat-body .chat {

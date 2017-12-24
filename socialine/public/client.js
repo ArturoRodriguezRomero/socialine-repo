@@ -7,34 +7,43 @@ const client = feathers();
 client.configure(feathers.socketio(socket));
 // Use localStorage to store our login token
 client.configure(feathers.authentication({
-  storage: window.localStorage
+    storage: window.localStorage
 }));
 
-// Store : messages.on() array
+const usersService = client.service('users');
 
-new Vue({
+var app = new Vue({
     el: '#app',
     data: {
-        client: {name: 'Arturo', pictureUrl: 'https://randomuser.me/api/portraits/men/80.jpg', about: 'Programando'},
-        users: [
-            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
-            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
-            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
-            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
-            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
-            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
-            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
-            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
-            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
-            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
-            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
-            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
-            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
-            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
-            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
-            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
-            {name: 'Gonzalo', pictureUrl: 'http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg', about: 'Enseñando a programar'},
-        ],
+        client: { name: 'Arturo', pictureUrl: 'https://randomuser.me/api/portraits/men/80.jpg', about: 'Programando' },
+        users: [],
+        selectedUser: {name: '', pictureUrl: '', about: '', lastConnection: ''},
         messages: [],
+    },
+    methods: {
+        selectUser: function (user){
+            console.log(user);
+            this.selectedUser = user;
+        },
+        toggleSlidingPanel: function (slidingPanelClass) {
+            this.toggleClass(document.querySelector(`.${slidingPanelClass}`), 'visible');
+        },
+        toggleClass: function(element, className){
+            if(element.classList.contains(className)){
+                element.classList.remove(className);
+            } else {
+                element.classList.add(className);
+            }
+        }
+    },
+    created: function () {
+        usersService.find().then(users => {
+            console.log('Load', users.data);
+            this.users = users.data;
+        });
+        usersService.on('created', (user) => {
+            console.log('Realtime', user);
+            this.users.push(user);
+        });
     }
 });

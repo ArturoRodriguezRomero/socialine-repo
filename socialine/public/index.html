@@ -13,25 +13,25 @@
   <div class="app-wrapper">
     <div id="app">
       <div class="main-panel">
-        <div class="sidebar user-list">
+        <div class="sidebar">
           <div class="sidebar-header">
             <div class="item">
-              <div class="client-picture" v-bind:style="{ 'background-image': 'url(' + client.pictureUrl + ')' }"></div>
+              <div class="client-picture" v-bind:style="{'background-image': 'url(' + client.pictureUrl + ')'}"></div>
               <div class="client-body">
                 <div class="client-name">{{client.name}}</div>
                 <div class="client-about">{{client.about}}</div>
               </div>
             </div>
             <div class="item">
-              <div class="client-modify">
+              <div class="client-modify" v-on:click="toggleSlidingPanel('sliding-panel')">
                 <i class="fas fa-bars"></i>
               </div>
             </div>
           </div>
           <div class="sidebar-body">
             <div class="user-list scrollbar">
-              <div class="user-item" v-for="user in users">
-                <div class="user-picture" v-bind:style="{ 'background-image': 'url(' + user.pictureUrl + ')' }"></div>
+              <div class="user-item" v-for="user in users" v-on:click="selectUser(user)" v-bind:class="[user._id == selectedUser._id ? 'selected': '']">
+                <div class="user-picture" v-bind:style="{'background-image' : 'url(' + user.pictureUrl +')'}"></div>
                 <div class="user-body">
                   <div class="user-name">{{user.name}}</div>
                   <div class="user-about">{{user.about}}</div>
@@ -40,141 +40,31 @@
               </div>
             </div>
           </div>
+          <div class="sliding-panel">
+            <div class="sliding-header">
+              <div class="panel-title">Settings</div>
+              <div class="close-panel" v-on:click="toggleSlidingPanel('sliding-panel')">
+                <i class="fas fa-times"></i>
+              </div>
+            </div>
+            <div class="sliding-body">
+            </div>
+          </div>
         </div>
         <div class="chat-wrapper">
           <div class="chat-header">
-            <div class="receiver-picture" style="background-image:url(http://i.dailymail.co.uk/i/pix/2017/04/20/13/3F6B966D00000578-4428630-image-m-80_1492690622006.jpg)"></div>
+            <div class="receiver-picture" v-bind:style="{ 'background-image': 'url(' + selectedUser.pictureUrl + ')' }"></div>
             <div class="receiver-body">
-              <div class="receiver-name">Gonzalo</div>
-              <div class="last-connection">Online</div>
+              <div class="receiver-name">{{selectedUser.name}}</div>
+              <div class="receiver-last-connection">{{selectedUser.lastConnection}}</div>
             </div>
           </div>
           <div class="chat-body scrollbar">
             <div class="chat">
-              <div class="message foreign">
-                <div class="text">Hola Arturo, cómo va todo!</div>
-                <div class="timestamp">16:58</div>
-              </div>
-              <div class="message local">
-                <div class="text">My bien!</div>
-                <div class="timestamp">17:15</div>
-              </div>
               <div class="message local">
                 <div class="text">Gracias por preguntar</div>
                 <div class="timestamp">17:15</div>
               </div>
-              <div class="message foreign">
-                <div class="text">Hola Arturo, cómo va todo!Hola Arturo, cómo va todo!Hola Arturo, cómo va todo!Hola Arturo, cómo va todo!Hola Arturo, cómo va todo!Hola Arturo, cómo va todo!Hola Arturo, cómo va todo!Hola Arturo, cómo va todo!Hola Arturo, cómo va todo!Hola Arturo, cómo va todo!Hola Arturo, cómo va todo!Hola Arturo, cómo va todo!Hola Arturo, cómo va todo!Hola Arturo, cómo va todo!</div>
-                <div class="timestamp">16:58</div>
-              </div>
-              <div class="message local">
-                <div class="text">My bien!</div>
-                <div class="timestamp">17:15</div>
-              </div>
-              <div class="message local">
-                <div class="text">Gracias por preguntar</div>
-                <div class="timestamp">17:15</div>
-              </div>
-              <div class="message foreign">
-                <div class="text">Hola Arturo, cómo va todo!</div>
-                <div class="timestamp">16:58</div>
-              </div>
-              <div class="message local">
-                <div class="text">My bien!</div>
-                <div class="timestamp">17:15</div>
-              </div>
-              <div class="message local">
-                <div class="text">Gracias por preguntar</div>
-                <div class="timestamp">17:15</div>
-              </div>
-              <div class="message foreign">
-                <div class="text">Hola Arturo, cómo va todo!</div>
-                <div class="timestamp">16:58</div>
-              </div>
-              <div class="message local">
-                <div class="text">My bien!</div>
-                <div class="timestamp">17:15</div>
-              </div>
-              <div class="message local">
-                <div class="text">Gracias por preguntar</div>
-                <div class="timestamp">17:15</div>
-              </div>
-              <div class="message foreign">
-                <div class="text">Hola Arturo, cómo va todo!</div>
-                <div class="timestamp">16:58</div>
-              </div>
-              <div class="message local">
-                <div class="text">My bien!</div>
-                <div class="timestamp">17:15</div>
-              </div>
-              <div class="message local">
-                <div class="text">Gracias por preguntar</div>
-                <div class="timestamp">17:15</div>
-              </div>
-              <div class="message foreign">
-                  <div class="text">Hola Arturo, cómo va todo!</div>
-                  <div class="timestamp">16:58</div>
-                </div>
-                <div class="message local">
-                  <div class="text">My bien!</div>
-                  <div class="timestamp">17:15</div>
-                </div>
-                <div class="message local">
-                  <div class="text">Gracias por preguntar</div>
-                  <div class="timestamp">17:15</div>
-                </div>
-                <div class="message foreign">
-                  <div class="text">Hola Arturo, cómo va todo!</div>
-                  <div class="timestamp">16:58</div>
-                </div>
-                <div class="message local">
-                  <div class="text">My bien!</div>
-                  <div class="timestamp">17:15</div>
-                </div>
-                <div class="message local">
-                  <div class="text">Gracias por preguntar</div>
-                  <div class="timestamp">17:15</div>
-                </div>
-                <div class="message foreign">
-                  <div class="text">Hola Arturo, cómo va todo!</div>
-                  <div class="timestamp">16:58</div>
-                </div>
-                <div class="message local">
-                  <div class="text">My bien!</div>
-                  <div class="timestamp">17:15</div>
-                </div>
-                <div class="message local">
-                  <div class="text">Gracias por preguntar</div>
-                  <div class="timestamp">17:15</div>
-                </div>
-                <div class="message foreign">
-                  <div class="text">Hola Arturo, cómo va todo!</div>
-                  <div class="timestamp">16:58</div>
-                </div>
-                <div class="message local">
-                  <div class="text">My bien!</div>
-                  <div class="timestamp">17:15</div>
-                </div>
-                <div class="message local">
-                  <div class="text">Gracias por preguntar</div>
-                  <div class="timestamp">17:15</div>
-                </div>
-                <div class="message foreign">
-                  <div class="text">Hola Arturo, cómo va todo!</div>
-                  <div class="timestamp">16:58</div>
-                </div>
-                <div class="message local">
-                  <div class="text">My bien!</div>
-                  <div class="timestamp">17:15</div>
-                </div>
-                <div class="message local">
-                    <div class="text">My bien!My bien!My bien!My bien!My bien!My bien!My bien!My bien!My bien!My bien!My bien!My bien!My bien!My bien!My bien!My bien!My bien!</div>
-                    <div class="timestamp">17:15</div>
-                  </div>
-                <div class="message local">
-                  <div class="text">Gracias por preguntar</div>
-                  <div class="timestamp">17:15</div>
-                </div>
             </div>
             <div class="splash-screen">
               <div class="app-name">Socialine</div>
