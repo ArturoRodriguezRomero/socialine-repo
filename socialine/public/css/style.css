@@ -42,6 +42,10 @@
     height: 100%;
     width: 100%; } }
 
+@media only screen and (max-width: 800px) {
+  .main-panel {
+    display: block; } }
+
 .main-panel .sidebar {
   position: relative;
   display: flex;
@@ -52,6 +56,16 @@
 @media only screen and (max-width: 1150px) {
   .main-panel .sidebar {
     width: 30%; } }
+
+@media only screen and (max-width: 800px) {
+  .main-panel .sidebar {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0%;
+    transition: 0.3s ease; }
+  .main-panel .sidebar.hidden {
+    left: -100%; } }
 
 .main-panel .sidebar .sidebar-header {
   display: flex;
@@ -148,7 +162,7 @@
   width: 100%;
   height: 100%;
   margin-left: -100%;
-  transition: 0.5s ease; }
+  transition: 0.3s ease; }
 
 .main-panel .sidebar .sliding-panel.visible {
   margin-left: 0%; }
@@ -186,6 +200,7 @@
   height: calc(100% - 60px); }
 
 .main-panel .chat-wrapper {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 700px; }
@@ -193,6 +208,15 @@
 @media only screen and (max-width: 1150px) {
   .main-panel .chat-wrapper {
     width: 70%; } }
+
+@media only screen and (max-width: 800px) {
+  .main-panel .chat-wrapper {
+    width: 100%;
+    height: 100%;
+    left: 100%;
+    transition: 0.3s ease; }
+  .main-panel .chat-wrapper.visible {
+    left: 0%; } }
 
 .main-panel .chat-wrapper .chat-header {
   display: flex;
@@ -202,6 +226,19 @@
   background-color: #f8f8f8;
   border-bottom: 1px solid #eee;
   padding: 5px; }
+
+.main-panel .chat-wrapper .chat-header .hide-chat {
+  display: none;
+  color: #9c9c9c;
+  font-size: 1.6em; }
+
+@media only screen and (max-width: 800px) {
+  .main-panel .chat-wrapper .chat-header .hide-chat {
+    display: block; } }
+
+.main-panel .chat-wrapper .chat-header .hide-chat:hover {
+  color: #757575;
+  cursor: pointer; }
 
 .main-panel .chat-wrapper .chat-header .receiver-picture {
   height: 50px;
@@ -223,6 +260,9 @@
 .main-panel .chat-wrapper .chat-body {
   position: relative;
   min-height: calc(100% - 60px - 60px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   overflow-y: auto; }
 
 .main-panel .chat-wrapper .chat-body .chat {
@@ -283,8 +323,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  display: none; }
+  align-items: center; }
 
 .main-panel .chat-wrapper .chat-body .splash-screen .app-name {
   font-size: 4em;
@@ -296,9 +335,6 @@
   height: 100px;
   width: 100px;
   background-size: cover; }
-
-.main-panel .chat-wrapper .chat-body .visible {
-  display: block; }
 
 .main-panel .chat-wrapper .chat-input {
   display: flex;
