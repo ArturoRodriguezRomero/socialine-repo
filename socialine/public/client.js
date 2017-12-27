@@ -16,42 +16,35 @@ const messagesService = client.service('messages');
 var app = new Vue({
     el: '#app',
     data: {
-        client: {about:"Haciendo un post nuevo.", lastConnection:"online", name:"Fernando", pictureUrl:"https://randomuser.me/api/portraits/men/57.jpg", _id:"Q4F6fck89d8lUv9c"},
+        client: {
+            _id: "H3lEoFfcDFV6Rm0m",
+            name: "Fernando",
+            pictureUrl: "https://randomuser.me/api/portraits/men/57.jpg",
+            about: "Haciendo un post nuevo.",
+            lastConnection: "online",
+            latitude: 40.2399098,
+            longitude: -3.6927629,
+            maxKmDistance: 50
+        },
         clientMessages: [],
         users: [],
         selectedUser: { name: '', pictureUrl: '', about: '', lastConnection: '' },
         messages: [],
         messageInput: ''
     },
-    methods: {
-        selectUser: function (user) {
-            console.log(user);
-            this.selectedUser = user;
-            this.toggleClass(document.querySelector('.sidebar'), 'hidden');
-            this.toggleClass(document.querySelector('.chat-wrapper'), 'visible');
+    computed: {
+        chatBody: function () {
+            return;
         },
-        toggleSlidingPanel: function (slidingPanelClass) {
-            this.toggleClass(document.querySelector(`.${slidingPanelClass}`), 'visible');
-        },
-        hideChat: function () {
-            this.toggleClass(document.querySelector('.sidebar'), 'hidden');
-            this.toggleClass(document.querySelector('.chat-wrapper'), 'visible');
-        },
-        sendMessage: function () {
-            messagesService.create({
-                sender: this.client._id,
-                receiver: this.selectedUser._id,
-                text: this.messageInput,
-                timestamp: new Date()
-            })
-            this.messageInput = '';
-        },
-        toggleClass: function (element, className) {
-            if (element.classList.contains(className)) {
-                element.classList.remove(className);
-            } else {
-                element.classList.add(className);
-            }
+        location: function () {
+            console.log('location');
+            navigator.geolocation.getCurrentPosition(success => {
+                console.log(success);
+                return success;
+            }, error => {
+                console.log(error);
+                return error;
+            });
         }
     },
     created: function () {
@@ -65,9 +58,10 @@ var app = new Vue({
         });
         messagesService.find({
             query: {
+                $limit: 200,
                 $or: [
-                    {sender: this.client._id},
-                    {receiver: this.client._id}
+                    { sender: this.client._id },
+                    { receiver: this.client._id }
                 ],
                 $sort: {
                     timestamp: 1
@@ -80,6 +74,65 @@ var app = new Vue({
         messagesService.on('created', message => {
             console.log(message);
             this.clientMessages.push(message);
+
         });
-    }
+
+        console.log(this.client.location);
+    },
+    updated: function () {
+        console.log('updated');
+        this.scrollChatBody();
+    },
+    methods: {
+        selectUser: function (user) {
+            console.log(user);
+            this.selectedUser = user;
+            this.toggleClass(this.$el.querySelector('.sidebar'), 'hidden');
+            this.toggleClass(this.$el.querySelector('.chat-wrapper'), 'visible');
+        },
+        toggleSlidingPanel: function (slidingPanelClass) {
+            this.toggleClass(this.$el.querySelector(`.${slidingPanelClass}`), 'visible');
+        },
+        hideChat: function () {
+            this.toggleClass(this.$el.querySelector('.sidebar'), 'hidden');
+            this.toggleClass(this.$el.querySelector('.chat-wrapper'), 'visible');
+        },
+        sendMessage: function () {
+            if (this.messageInput != '') {
+                messagesService.create({
+                    sender: this.client._id,
+                    receiver: this.selectedUser._id,
+                    text: this.messageInput,
+                    timestamp: moment()
+                })
+                this.messageInput = '';
+            }
+        },
+        scrollChatBody: function () {
+            this.$el.querySelector('.chat-body').scrollTop = this.$el.querySelector('.chat-body').scrollHeight;
+        },
+        toggleClass: function (element, className) {
+            if (element.classList.contains(className)) {
+                element.classList.remove(className);
+            } else {
+                element.classList.add(className);
+            }
+        },
+        kmBetweenLocations: function (lat1, lat2, lon1, lon2) {
+            var p = 0.017453292519943295;    // Math.PI / 180
+            var c = Math.cos;
+            var a = 0.5 - c((lat2 - lat1) * p) / 2 +
+                c(lat1 * p) * c(lat2 * p) *
+                (1 - c((lon2 - lon1) * p)) / 2;
+
+                console.log(12742 * Math.asin(Math.sqrt(a)));
+            return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+        }
+    },
+    filters: {
+        momentTimestamp: function (date) {
+            return moment(date).format("hh:mm")
+        }
+    },
+
 });

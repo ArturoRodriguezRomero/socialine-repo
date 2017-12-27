@@ -427,12 +427,14 @@ $mobile: "only screen and (max-width : 800px)";
 
             .chat{
                 display: flex;
+                height: fit-content;
                 flex-direction: column;
                 padding: $stronger-padding;
 
                 .message{
                     position: relative;
                     width: fit-content;
+                    min-height: fit-content;
                     display: flex;
                     flex-direction: column;
                     background-color: $white;

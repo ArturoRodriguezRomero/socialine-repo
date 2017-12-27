@@ -267,12 +267,14 @@
 
 .main-panel .chat-wrapper .chat-body .chat {
   display: flex;
+  height: fit-content;
   flex-direction: column;
   padding: 20px; }
 
 .main-panel .chat-wrapper .chat-body .chat .message {
   position: relative;
   width: fit-content;
+  min-height: fit-content;
   display: flex;
   flex-direction: column;
   background-color: #fff;
