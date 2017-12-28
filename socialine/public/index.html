@@ -30,7 +30,8 @@
           </div>
           <div class="sidebar-body">
             <div class="user-list scrollbar">
-              <div class="user-item" v-for="user in users" v-if="user._id != client._id && kmBetweenLocations(client.latitude, user.latitude, client.longitude, user.longitude) < client.maxKmDistance" v-on:click="selectUser(user)" v-bind:class="[user._id == selectedUser._id ? 'selected': '']">
+              <div class="user-item" v-for="user in users" v-if="user._id != client._id && kmBetweenLocations(client.latitude, user.latitude, client.longitude, user.longitude) < client.maxKmDistance"
+                v-on:click="selectUser(user)" v-bind:class="[user._id == selectedUser._id ? 'selected': '']">
                 <div class="user-picture" v-bind:style="{'background-image' : 'url(' + user.pictureUrl +')'}"></div>
                 <div class="user-body">
                   <div class="user-name">{{user.name}}</div>
@@ -47,13 +48,43 @@
                 <i class="fas fa-times"></i>
               </div>
             </div>
-            <div class="sliding-body">
+            <div class="sliding-body scrollbar">
+              <div class="client-picture" v-bind:style="{'background-image': 'url(' + client.pictureUrl + ')'}"></div>
+              <div class="input-wrapper">
+                <div class="input-title">Image</div>
+                <div class="input-row">
+                  <input class="textbox" type="text" name="" id="sliderImageInput" :value="client.pictureUrl">
+                  <div class="action-button">
+                    <i class="fas fa-pencil-alt"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="input-wrapper">
+                <div class="input-title">Name</div>
+                <div class="input-row">
+                  <input class="textbox" type="text" name="" id="sliderNameInput" :value="client.name">
+                  <div class="action-button">
+                    <i class="fas fa-pencil-alt"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="input-wrapper">
+                <div class="input-title">About</div>
+                <div class="input-row">
+                  <input class="textbox" type="text" name="" id="sliderAboutInput" :value="client.about">
+                  <div class="action-button">
+                    <i class="fas fa-pencil-alt"></i>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
         <div class="chat-wrapper">
           <div class="chat-header">
-            <div class="hide-chat" v-on:click="hideChat"><i class="fas fa-angle-left"></i></div>
+            <div class="hide-chat" v-on:click="hideChat">
+              <i class="fas fa-angle-left"></i>
+            </div>
             <div class="receiver-picture" v-bind:style="{ 'background-image': 'url(' + selectedUser.pictureUrl + ')' }"></div>
             <div class="receiver-body">
               <div class="receiver-name">{{selectedUser.name}}</div>
@@ -62,7 +93,8 @@
           </div>
           <div class="chat-body scrollbar">
             <div class="chat">
-              <div class="message" v-for="message in clientMessages" v-if="message.sender == selectedUser._id || message.receiver == selectedUser._id" v-bind:class="[message.sender == client._id ? 'local': '']">
+              <div class="message" v-for="message in clientMessages" v-if="message.sender == selectedUser._id || message.receiver == selectedUser._id"
+                v-bind:class="[message.sender == client._id ? 'local': '']">
                 <div class="text">{{message.text}}</div>
                 <div class="timestamp">{{message.timestamp | momentTimestamp}}</div>
               </div>
@@ -73,7 +105,8 @@
             </div>
           </div>
           <div class="chat-input">
-            <input class="textbox" v-model.trim="messageInput" v-on:keydown.enter="sendMessage" :disabled="selectedUser._id == undefined" type="text" name="" id="messageInput" :placeholder="selectedUser._id == undefined ? 'Select a contact first...' : 'Write your message here...'">
+            <input class="textbox" v-model.trim="messageInput" v-on:keydown.enter="sendMessage" v-on:focus="scrollChatBody" :disabled="selectedUser._id == undefined"
+              type="text" name="" id="messageInput" :placeholder="selectedUser._id == undefined ? 'Select a contact first...' : 'Write your message here...'">
             <button class="action-button" v-on:click="sendMessage" :disabled="selectedUser._id == undefined">
               <span>
                 <i class="fas fa-location-arrow" data-fa-transform="rotate-45"></i>

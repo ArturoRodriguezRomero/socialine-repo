@@ -28,13 +28,17 @@ $brand-font: 'Source Sans Pro', sans-serif;
 $icon-font-size: 1.6em;
 $panel-title-font-size: 1.5em;
 
+$slider-input-font-size: 1.3em;
+
 $splash-name-font-size: 4em;
 
 $chat-textbox-font-size: 1.3em;
 $chat-action-button-font-size: 1.3em;
 
-$message-text-font-size: 1.1em;
-$message-timestamp-font-size: .8em;
+$message-text-font-size-desktop: 1.1em;
+$message-timestamp-font-size-desktop: .8em;
+$message-text-font-size-mobile: .8em;
+$message-timestamp-font-size-mobile: .6em;
 
 /*Miscelaneous*/
 
@@ -85,17 +89,26 @@ $user-item-picture-width: 50px;
 $user-new-message-height: 7px;
 $user-new-message-width: 7px;
 
+$slider-client-picture-height: 200px;
+$slider-client-picture-width: 200px;
+
+$slider-modify-button-width: 30px;
+
 $chat-wrapper-desktop-width: 700px;
 $chat-wrapper-tablet-width: 70%;
 $chat-header-height: $sidebar-header-height;
 
 $chat-input-height: $chat-header-height;
+$chat-input-height-mobile: 45px;
 
 $splash-logo-height: 100px;
 $splash-logo-width: 100px;
 
 $action-button-width: 45px;
 $action-button-height: $action-button-width;
+
+$action-button-width-mobile: 35px;
+$action-button-height-mobile: $action-button-width-mobile;
 
 /*Media queries*/
 
@@ -343,8 +356,71 @@ $mobile: "only screen and (max-width : 800px)";
             }
 
             .sliding-body{
-                background-color: $white;
                 height: calc(100% - #{$sidebar-header-height});
+                overflow-y: auto;
+                max-height: calc(100% - #{$sidebar-header-height});
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                background-color: $light-grey;
+                
+
+                .client-picture{
+                    min-width: $slider-client-picture-width;
+                    min-height: $slider-client-picture-height;
+                    border-radius: $slider-client-picture-height;
+                    background-color: blacK;
+                    background-size: cover;
+                    margin: $strong-margin;
+                }
+
+                .input-wrapper{
+                    width: 100%;
+                    padding: $strong-padding;
+                    margin-top: $regular-margin;
+                    margin-bottom: $regular-margin;
+                    border-bottom: $light-border;
+
+                    .input-title{
+                        margin-bottom: $strong-margin;
+                        color: $brand-color;
+                    }
+
+                    .input-row{
+                        position: relative;
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+
+                        .textbox{
+                            width: calc(100% - #{$slider-modify-button-width});
+                            font-size: $slider-input-font-size;
+                            border: none;
+                            background-color: transparent;
+                            border-bottom: 2px solid transparent;
+                            outline: none;
+
+                            &:focus{
+                                border-bottom: 2px solid $brand-color;
+                            }
+                        }
+
+                        .action-button{
+                            position: absolute;
+                            right: 0px;
+                            width: $slider-modify-button-width;
+                            font-size: $icon-font-size;
+                            color: $light-icon;
+
+                            svg{
+                                &:hover{
+                                    cursor: pointer;
+                                    color: $dark-icon;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -425,6 +501,10 @@ $mobile: "only screen and (max-width : 800px)";
             justify-content: flex-end;
             overflow-y: auto;
 
+            @media #{$mobile}{
+                min-height: calc(100% - #{$chat-header-height} - #{$chat-input-height-mobile});
+            }
+
             .chat{
                 display: flex;
                 height: fit-content;
@@ -444,13 +524,21 @@ $mobile: "only screen and (max-width : 800px)";
                     border-radius: $light-border-radius;
 
                     .text{
-                        font-size: $message-text-font-size;
+                        font-size: $message-text-font-size-desktop;
+
+                        @media #{$mobile}{
+                            font-size: $message-text-font-size-mobile;
+                        }
                     }
 
                     .timestamp{
-                        font-size: $message-timestamp-font-size;
+                        font-size: $message-timestamp-font-size-desktop;
                         align-self: flex-end;
                         color: $text-light;
+
+                        @media #{$mobile}{
+                            font-size: $message-timestamp-font-size-mobile;
+                        }
                     }
                 }
 
@@ -519,6 +607,10 @@ $mobile: "only screen and (max-width : 800px)";
             border-top: $light-border;
             padding: $regular-padding;
             border-left: $light-border;
+            
+            @media #{$mobile}{
+                min-height: $chat-input-height-mobile;
+            }
 
             .textbox{
                 position: relative;
@@ -529,6 +621,10 @@ $mobile: "only screen and (max-width : 800px)";
                 border-radius: $regular-border-radius;
                 border:none;
                 outline: none;
+
+                @media #{$mobile}{
+                    height: $action-button-height-mobile;
+                }
 
                 &:focus{
                     box-shadow: inset $light-box-shadow;
@@ -548,6 +644,11 @@ $mobile: "only screen and (max-width : 800px)";
                 font-size: $chat-action-button-font-size;
                 transition: $light-transition;
                 outline: none;
+
+                @media #{$mobile}{
+                    width: $action-button-width-mobile;
+                    height: $action-button-height-mobile;
+                }
 
                 &:hover{
                     cursor: pointer;

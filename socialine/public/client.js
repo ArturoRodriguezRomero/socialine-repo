@@ -24,7 +24,7 @@ var app = new Vue({
             lastConnection: "online",
             latitude: 40.2399098,
             longitude: -3.6927629,
-            maxKmDistance: 50
+            maxKmDistance: 5
         },
         clientMessages: [],
         users: [],
@@ -109,6 +109,7 @@ var app = new Vue({
             }
         },
         scrollChatBody: function () {
+            console.log('scrollBody');
             this.$el.querySelector('.chat-body').scrollTop = this.$el.querySelector('.chat-body').scrollHeight;
         },
         toggleClass: function (element, className) {
