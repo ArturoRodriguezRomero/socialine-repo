@@ -18,6 +18,7 @@
   /*background: linear-gradient(to bottom, $brand-color-dark 0%, $brand-color-dark $app-wrapper-gradient-height, $dark-grey $app-wrapper-gradient-height);*/
   background-image: url(https://wallpaperscraft.com/image/giau_pass_italy_alps_118374_3840x2400.jpg);
   background-size: cover;
+  background-position: 50% 50%;
   width: 100%;
   height: 100%;
   color: #484c55; }
@@ -470,15 +471,20 @@
   align-items: center;
   justify-content: center; }
 
+@media only screen and (max-width: 800px) {
+  .log-panel {
+    align-items: flex-start;
+    overflow-y: scroll;
+    padding: 10px; } }
+
 .log-panel .brand-line {
   position: absolute;
   top: 0px;
-  left: 0px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-top: 10px;
-  margin-left: 10px; }
+  justify-content: center;
+  margin-top: 10px; }
 
 @media only screen and (max-width: 800px) {
   .log-panel .brand-line {
@@ -501,11 +507,6 @@
   border-radius: 2px;
   overflow: hidden; }
 
-@media only screen and (max-width: 800px) {
-  .log-panel .log-table {
-    width: 100%;
-    height: 100%; } }
-
 .log-panel .log-table .log-selector-row {
   display: flex;
   width: 100%;
@@ -523,10 +524,6 @@
   border: none;
   outline: none; }
 
-@media only screen and (max-width: 800px) {
-  .log-panel .log-table .log-selector-row .log-selector {
-    height: 50px; } }
-
 .log-panel .log-table .log-selector-row .log-selector:hover {
   cursor: pointer; }
 
@@ -539,23 +536,57 @@
 .log-panel .log-table .log-wrapper {
   position: relative;
   width: 100%;
-  height: 500px;
+  height: fit-content;
   background-color: #f8f8f8;
   box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.2); }
 
-@media only screen and (max-width: 800px) {
-  .log-panel .log-table .log-wrapper {
-    height: calc(100% - 50px); } }
-
 .log-panel .log-table .log-wrapper .log {
-  position: absolute;
+  position: relative;
   width: 100%;
-  height: 100%;
   display: none;
-  padding: 5px; }
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 10px;
+  overflow-y: auto; }
 
 .log-panel .log-table .log-wrapper .log.visible {
   display: flex; }
+
+.log-panel .log-table .log-wrapper .log .row {
+  width: 100%;
+  margin-bottom: 10px; }
+
+.log-panel .log-table .log-wrapper .log .row .label {
+  color: #F0433A;
+  font-size: 1.2em; }
+
+.log-panel .log-table .log-wrapper .log .row .textbox {
+  height: 30px;
+  width: 100%;
+  background-color: #eee;
+  border: none;
+  padding: 3px;
+  outline: none;
+  font-size: 1.2em;
+  box-shadow: inset 0px 0px 1px 1px rgba(0, 0, 0, 0.2); }
+
+.log-panel .log-table .log-wrapper .log .row .tip {
+  font-size: 0.9em;
+  color: #6e7480; }
+
+.log-panel .log-table .log-wrapper .log .action-button {
+  width: 100%;
+  height: 40px;
+  color: #fff;
+  background-color: #F0433A;
+  border: none;
+  font-size: 1.2em;
+  box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 2px; }
+
+.log-panel .log-table .log-wrapper .log .action-button:hover {
+  cursor: pointer;
+  box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.2); }
 
 /*Scrollbars*/
 .scrollbar::-webkit-scrollbar-track {

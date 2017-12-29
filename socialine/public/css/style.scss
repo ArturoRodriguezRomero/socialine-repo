@@ -44,6 +44,10 @@ $brand-line-font-size: 3em;
 
 $log-selector-font-size: 1.4em;
 
+$log-label-font-size: 1.2em;
+
+$log-tip-font-size: .9em;
+
 /*Miscelaneous*/
 
 $lighter-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2);
@@ -138,6 +142,7 @@ $mobile: "only screen and (max-width : 800px)";
     /*background: linear-gradient(to bottom, $brand-color-dark 0%, $brand-color-dark $app-wrapper-gradient-height, $dark-grey $app-wrapper-gradient-height);*/
     background-image: url(https://wallpaperscraft.com/image/giau_pass_italy_alps_118374_3840x2400.jpg);
     background-size: cover;
+    background-position: 50% 50%;
     width: 100%;
     height: 100%;
     color: $text-dark;
@@ -683,15 +688,20 @@ $mobile: "only screen and (max-width : 800px)";
     align-items: center;
     justify-content: center;
 
+    @media #{$mobile}{
+        align-items: flex-start;
+        overflow-y: scroll;
+        padding: $strong-padding;
+    }
+
     .brand-line{
         position: absolute;
         top: 0px;
-        left: 0px;
         display: flex;
         flex-direction: row;
         align-items: center;
+        justify-content: center;
         margin-top: $strong-margin;
-        margin-left: $strong-margin;
 
         @media #{$mobile}{
             display: none;
@@ -717,10 +727,6 @@ $mobile: "only screen and (max-width : 800px)";
         border-radius: $light-border-radius;
         overflow: hidden;
 
-        @media #{$mobile}{
-            width: 100%;
-            height: 100%;
-        }
 
         .log-selector-row{
             display: flex;
@@ -739,9 +745,6 @@ $mobile: "only screen and (max-width : 800px)";
                 border: none;
                 outline: none;
 
-                @media #{$mobile}{
-                    height: $log-selector-height-mobile;
-                }
 
                 &:hover{
                     cursor: pointer;
@@ -759,23 +762,65 @@ $mobile: "only screen and (max-width : 800px)";
         .log-wrapper{
             position: relative;
             width: 100%;
-            height: 500px;
+            height: fit-content;
             background-color: $light-grey;
             box-shadow: $light-box-shadow;
 
-            @media #{$mobile}{
-                height: calc(100% - #{$log-selector-height-mobile});
-            }
 
             .log{
-                position: absolute;
+                position: relative;
                 width: 100%;
-                height: 100%;
+                
                 display: none;
-                padding: $regular-padding;
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: $strong-padding;
+                overflow-y: auto;
 
                 &.visible{
                     display: flex;
+                }
+
+                .row{
+                    width: 100%;
+                    margin-bottom: $strong-margin;
+
+                    .label{
+                        color: $brand-color;
+                        font-size: $log-label-font-size;
+                    }
+                    
+                    .textbox{
+                        height: 30px;
+                        width: 100%;
+                        background-color: $dark-grey;
+                        border: none;
+                        padding: $light-padding;
+                        outline: none;
+                        font-size: $log-label-font-size;
+                        box-shadow: inset $lighter-box-shadow;
+                    }
+    
+                    .tip{
+                        font-size: $log-tip-font-size;
+                        color: $text-light;
+                    }
+                }
+
+                .action-button{
+                    width: 100%;
+                    height: 40px;
+                    color: $white;
+                    background-color: $brand-color;
+                    border: none;
+                    font-size: $log-label-font-size;
+                    box-shadow: $lighter-box-shadow;
+                    border-radius: $light-border-radius;
+
+                    &:hover{
+                        cursor: pointer;
+                        box-shadow: $light-box-shadow;
+                    }
                 }
             }
         }

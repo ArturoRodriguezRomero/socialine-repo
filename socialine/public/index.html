@@ -127,11 +127,37 @@
           </div>
           <div class="log-wrapper">
             <div id="loginLog" class="log login" v-bind:class="[selectedLogSelector == 'loginLog' ? 'visible': '']">
-                loginLog
+              <div class="row">
+                <div class="label">Username</div>
+                <input type="text" name="" id="loginUsername" class="textbox">
+              </div>
+              <div class="row">
+                <div class="label">Password</div>
+                <input type="password" name="" id="loginPassword" class="textbox">
+              </div>
+              <button class="action-button">Log In</button>
             </div>
             <div id="signupLog" class="log signup" v-bind:class="[selectedLogSelector == 'signupLog' ? 'visible': '']">
-                signupLog
+              <div class="row">
+                <div class="label">Username</div>
+                <input type="text" name="" id="signupUsername" class="textbox">
+                <div class="tip">This is the name of your account, you will use it to sign in. Nobody will see it.</div>
               </div>
+              <div class="row">
+                <div class="label">Password</div>
+                <input type="password" name="" id="signupPassword" class="textbox">
+              </div>
+              <div class="row">
+                <div class="label">Confirm password</div>
+                <input type="password" name="" id="signupConfirmPassword" class="textbox">
+              </div>
+              <div class="row">
+                <div class="label">Name</div>
+                <input type="text" name="" id="signupName" class="textbox">
+                <div class="tip">This is the name other users will see. You can always change it.</div>
+              </div>
+              <button class="action-button">Sign up</button>
+            </div>
           </div>
         </div>
       </div>
