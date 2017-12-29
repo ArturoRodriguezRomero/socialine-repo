@@ -17,20 +17,21 @@ var app = new Vue({
     el: '#app',
     data: {
         client: {
-            _id: "H3lEoFfcDFV6Rm0m",
+            _id: "lEmTPP5GDuccJV9A",
             name: "Fernando",
             pictureUrl: "https://randomuser.me/api/portraits/men/57.jpg",
             about: "Haciendo un post nuevo.",
             lastConnection: "online",
             latitude: 40.2399098,
             longitude: -3.6927629,
-            maxKmDistance: 5
+            maxKmDistance: 5000
         },
         clientMessages: [],
         users: [],
         selectedUser: { name: '', pictureUrl: '', about: '', lastConnection: '' },
         messages: [],
-        messageInput: ''
+        messageInput: '',
+        selectedLogSelector: 'loginLog'
     },
     computed: {
         chatBody: function () {

@@ -12,7 +12,7 @@
 <body>
   <div class="app-wrapper">
     <div id="app">
-      <div class="main-panel">
+      <div class="main-panel" style="display:none">
         <div class="sidebar">
           <div class="sidebar-header">
             <div class="item">
@@ -112,6 +112,26 @@
                 <i class="fas fa-location-arrow" data-fa-transform="rotate-45"></i>
               </span>
             </button>
+          </div>
+        </div>
+      </div>
+      <div class="log-panel">
+        <div class="brand-line">
+          <div class="app-logo"></div>
+          <div class="app-name">Socialine</div>
+        </div>
+        <div class="log-table">
+          <div class="log-selector-row">
+            <button class="log-selector" v-bind:class="[selectedLogSelector == 'loginLog' ? 'selected': '']" v-on:click="selectedLogSelector = 'loginLog'">Log in</button>
+            <button class="log-selector" v-bind:class="[selectedLogSelector == 'signupLog' ? 'selected': '']" v-on:click="selectedLogSelector = 'signupLog'">Sign up</button>
+          </div>
+          <div class="log-wrapper">
+            <div id="loginLog" class="log login" v-bind:class="[selectedLogSelector == 'loginLog' ? 'visible': '']">
+                loginLog
+            </div>
+            <div id="signupLog" class="log signup" v-bind:class="[selectedLogSelector == 'signupLog' ? 'visible': '']">
+                signupLog
+              </div>
           </div>
         </div>
       </div>

@@ -40,6 +40,10 @@ $message-timestamp-font-size-desktop: .8em;
 $message-text-font-size-mobile: .8em;
 $message-timestamp-font-size-mobile: .6em;
 
+$brand-line-font-size: 3em;
+
+$log-selector-font-size: 1.4em;
+
 /*Miscelaneous*/
 
 $lighter-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2);
@@ -109,6 +113,10 @@ $action-button-height: $action-button-width;
 
 $action-button-width-mobile: 35px;
 $action-button-height-mobile: $action-button-width-mobile;
+
+$log-panel-width-desktop: 300px;
+$log-selector-height: 50px;
+$log-selector-height-mobile: 50px;
 
 /*Media queries*/
 
@@ -662,6 +670,112 @@ $mobile: "only screen and (max-width : 800px)";
 
                 &:focus{
                     box-shadow: $light-box-shadow;
+                }
+            }
+        }
+    }
+}
+
+.log-panel{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .brand-line{
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-top: $strong-margin;
+        margin-left: $strong-margin;
+
+        @media #{$mobile}{
+            display: none;
+        }
+
+        .app-logo{
+            background-image: url(../assets/splash.png);
+            height: $splash-logo-height;
+            width: $splash-logo-width;
+            background-size: cover;
+        }
+
+        .app-name{
+            font-size: $brand-line-font-size;
+            color: $brand-color;
+            margin-left: $strong-margin;
+        }
+    }
+
+    .log-table{
+        width: $log-panel-width-desktop;
+        box-shadow: $light-box-shadow;
+        border-radius: $light-border-radius;
+        overflow: hidden;
+
+        @media #{$mobile}{
+            width: 100%;
+            height: 100%;
+        }
+
+        .log-selector-row{
+            display: flex;
+            width: 100%;
+            flex-direction: row;
+            background-color: $brand-color-dark;
+            overflow: hidden;
+    
+            .log-selector{
+                width: 50%;
+                height: $log-selector-height;
+                font-size: $log-selector-font-size;
+                background-color: transparent;
+                color: $white;
+                font-weight: 600;
+                border: none;
+                outline: none;
+
+                @media #{$mobile}{
+                    height: $log-selector-height-mobile;
+                }
+
+                &:hover{
+                    cursor: pointer;
+                }
+
+                &.selected{
+                    background-color: $light-grey;
+                    color: $brand-color;
+                    box-shadow: $light-box-shadow;
+                    z-index: 1;
+                }
+            }
+        }
+
+        .log-wrapper{
+            position: relative;
+            width: 100%;
+            height: 500px;
+            background-color: $light-grey;
+            box-shadow: $light-box-shadow;
+
+            @media #{$mobile}{
+                height: calc(100% - #{$log-selector-height-mobile});
+            }
+
+            .log{
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                display: none;
+                padding: $regular-padding;
+
+                &.visible{
+                    display: flex;
                 }
             }
         }

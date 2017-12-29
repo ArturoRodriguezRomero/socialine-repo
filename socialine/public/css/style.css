@@ -463,6 +463,100 @@
 .main-panel .chat-wrapper .chat-input .action-button:focus {
   box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.2); }
 
+.log-panel {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+
+.log-panel .brand-line {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 10px;
+  margin-left: 10px; }
+
+@media only screen and (max-width: 800px) {
+  .log-panel .brand-line {
+    display: none; } }
+
+.log-panel .brand-line .app-logo {
+  background-image: url(../assets/splash.png);
+  height: 100px;
+  width: 100px;
+  background-size: cover; }
+
+.log-panel .brand-line .app-name {
+  font-size: 3em;
+  color: #F0433A;
+  margin-left: 10px; }
+
+.log-panel .log-table {
+  width: 300px;
+  box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  overflow: hidden; }
+
+@media only screen and (max-width: 800px) {
+  .log-panel .log-table {
+    width: 100%;
+    height: 100%; } }
+
+.log-panel .log-table .log-selector-row {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  background-color: #a73737;
+  overflow: hidden; }
+
+.log-panel .log-table .log-selector-row .log-selector {
+  width: 50%;
+  height: 50px;
+  font-size: 1.4em;
+  background-color: transparent;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  outline: none; }
+
+@media only screen and (max-width: 800px) {
+  .log-panel .log-table .log-selector-row .log-selector {
+    height: 50px; } }
+
+.log-panel .log-table .log-selector-row .log-selector:hover {
+  cursor: pointer; }
+
+.log-panel .log-table .log-selector-row .log-selector.selected {
+  background-color: #f8f8f8;
+  color: #F0433A;
+  box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.2);
+  z-index: 1; }
+
+.log-panel .log-table .log-wrapper {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  background-color: #f8f8f8;
+  box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.2); }
+
+@media only screen and (max-width: 800px) {
+  .log-panel .log-table .log-wrapper {
+    height: calc(100% - 50px); } }
+
+.log-panel .log-table .log-wrapper .log {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: none;
+  padding: 5px; }
+
+.log-panel .log-table .log-wrapper .log.visible {
+  display: flex; }
+
 /*Scrollbars*/
 .scrollbar::-webkit-scrollbar-track {
   background-color: transparent; }
