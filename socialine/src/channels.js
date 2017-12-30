@@ -6,6 +6,7 @@ module.exports = function(app) {
 
   app.on('connection', connection => {
     // On a new real-time connection, add it to the anonymous channel
+    console.log('Anonymous User connected');
     app.channel('anonymous').join(connection);
   });
 
@@ -47,11 +48,11 @@ module.exports = function(app) {
   });
 
   // TO BE REMOVED
-  app.publish((data, hook) => {
+  /*app.publish((data, hook) => {
     console.log('Publishing all events to all anonymous users.'); // eslint-disable-line
 
     return app.channel('anonymous');
-  });
+  });*/
 
   // Here you can also add service specific event publishers
   // e..g the publish the `users` service `created` event to the `admins` channel
