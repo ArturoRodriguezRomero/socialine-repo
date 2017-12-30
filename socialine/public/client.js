@@ -10,81 +10,75 @@ client.configure(feathers.authentication({
     storage: window.localStorage
 }));
 
+const accountsService = client.service('accounts');
 const usersService = client.service('users');
 const messagesService = client.service('messages');
+const authenticationService = client.service('authentication');
 
 var app = new Vue({
     el: '#app',
     data: {
-        client: {
-            _id: "lEmTPP5GDuccJV9A",
-            name: "Fernando",
-            pictureUrl: "https://randomuser.me/api/portraits/men/57.jpg",
-            about: "Haciendo un post nuevo.",
-            lastConnection: "online",
-            latitude: 40.2399098,
-            longitude: -3.6927629,
-            maxKmDistance: 5000
-        },
+        client: null,
         clientMessages: [],
         users: [],
         selectedUser: { name: '', pictureUrl: '', about: '', lastConnection: '' },
         messages: [],
         messageInput: '',
-        selectedLogSelector: 'loginLog'
-    },
-    computed: {
-        chatBody: function () {
-            return;
-        },
-        location: function () {
-            console.log('location');
-            navigator.geolocation.getCurrentPosition(success => {
-                console.log(success);
-                return success;
-            }, error => {
-                console.log(error);
-                return error;
-            });
-        }
+        selectedLogSelector: 'loginLog',
+        signupUsername: '',
+        signupPassword: '',
+        signupConfirmPassword: '',
+        signupName: '',
+        loginUsername: '',
+        loginPassword: ''
     },
     created: function () {
-        usersService.find().then(users => {
-            console.log('Load', users.data);
-            this.users = users.data;
-        });
-        usersService.on('created', user => {
-            console.log('Realtime', user);
-            this.users.push(user);
-        });
-        messagesService.find({
-            query: {
-                $limit: 200,
-                $or: [
-                    { sender: this.client._id },
-                    { receiver: this.client._id }
-                ],
-                $sort: {
-                    timestamp: 1
-                }
-            }
-        }).then(messages => {
-            console.log(messages);
-            this.clientMessages = messages.data;
-        });
-        messagesService.on('created', message => {
-            console.log(message);
-            this.clientMessages.push(message);
-
-        });
-
-        console.log(this.client.location);
+        if (this.client != null) {
+        }
     },
     updated: function () {
-        console.log('updated');
+        //console.log('updated');
         this.scrollChatBody();
     },
+    computed: {
+        signUpCredentials: function () {
+            return { username: this.signupUsername, password: this.signupPassword };
+        },
+        logInCredentials: function () {
+            return { username: this.loginUsername, password: this.loginPassword };
+        }
+    },
     methods: {
+        loadApp: function () {
+            usersService.find().then(users => {
+                console.log('Load', users.data);
+                this.users = users.data;
+            });
+            usersService.on('created', user => {
+                console.log('Realtime', user);
+                this.users.push(user);
+            });
+            messagesService.find({
+                query: {
+                    $limit: 200,
+                    $or: [
+                        { sender: this.client._id },
+                        { receiver: this.client._id }
+                    ],
+                    $sort: {
+                        timestamp: 1
+                    }
+                }
+            }).then(messages => {
+                console.log(messages);
+                this.clientMessages = messages.data;
+            });
+            messagesService.on('created', message => {
+                console.log(message);
+                this.clientMessages.push(message);
+
+            });
+        },
         selectUser: function (user) {
             console.log(user);
             this.selectedUser = user;
@@ -105,13 +99,75 @@ var app = new Vue({
                     receiver: this.selectedUser._id,
                     text: this.messageInput,
                     timestamp: moment()
-                })
+                });
                 this.messageInput = '';
             }
         },
         scrollChatBody: function () {
-            console.log('scrollBody');
-            this.$el.querySelector('.chat-body').scrollTop = this.$el.querySelector('.chat-body').scrollHeight;
+            if (this.client != null) {
+                this.$el.querySelector('.chat-body').scrollTop = this.$el.querySelector('.chat-body').scrollHeight;
+            }
+        },
+        signUp: function () {
+            if (this.signupUsername == '' || this.signupPassword == '' || this.signupConfirmPassword == '' || this.signupName == '') {
+                return;
+            }
+            console.log('signup');
+            accountsService.create({
+                username: this.signupUsername,
+                password: this.signupPassword
+            }).then(account => {
+                console.log(account);
+                navigator.geolocation.getCurrentPosition(success => {
+                    console.log(success);
+                    usersService.create({
+                        accountId: account._id,
+                        name: this.signupName,
+                        pictureUrl: "https://pbs.twimg.com/media/CLI0ZQmUkAA9int.png",
+                        about: "Hey there, I'm using Socialine",
+                        lastConnection: "online",
+                        latitude: success.coords.latitude,
+                        longitude: success.coords.longitude,
+                        maxKmDistance: 5000
+                    }).then(user => {
+                        console.log('user', user);
+                        //this.client = user;
+                        console.log('this.client', this.client);
+                        client.authenticate(Object.assign({ strategy: 'local' }, this.signUpCredentials)).then(resolve => {
+                            this.client = user;
+                            console.log(this.client);
+                            this.loadApp();
+                        });
+                    });
+                }, error => {
+                    console.log(error);
+                });
+            });
+        },
+        login: function () {
+            console.log('login');
+            console.log(localStorage.getItem('feathers-jwt'));
+            if(localStorage.getItem('feathers-jwt')){
+                client.authenticate(Object.assign({ strategy: 'jwt' }, localStorage.getItem('feathers-jwt'))).then(() => {
+                    console.log(token);
+                    console.log(localStorage);
+                    usersService.find().then(result => {
+                        console.log(result);
+                    });
+                    //this.client = user;
+                    //console.log(this.client);
+                    //this.loadApp();
+                });
+            }
+            client.authenticate(Object.assign({ strategy: 'local' }, this.logInCredentials)).then(token => {
+                console.log(token);
+                usersService.find().then(result => {
+                    console.log(result);
+                });
+                //this.client = user;
+                //console.log(this.client);
+                //this.loadApp();
+            });
         },
         toggleClass: function (element, className) {
             if (element.classList.contains(className)) {
@@ -127,7 +183,7 @@ var app = new Vue({
                 c(lat1 * p) * c(lat2 * p) *
                 (1 - c((lon2 - lon1) * p)) / 2;
 
-                console.log(12742 * Math.asin(Math.sqrt(a)));
+            //console.log(12742 * Math.asin(Math.sqrt(a)));
             return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
         }
     },
