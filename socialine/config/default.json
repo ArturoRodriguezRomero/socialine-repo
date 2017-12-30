@@ -27,6 +27,7 @@
     },
     "local": {
       "entity": "account",
+      "usernameField": "\\username",
       "passwordField": "password"
     }
   }
