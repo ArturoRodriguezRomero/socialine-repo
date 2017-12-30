@@ -118,55 +118,58 @@ var app = new Vue({
                 password: this.signupPassword
             }).then(account => {
                 console.log(account);
-                navigator.geolocation.getCurrentPosition(success => {
-                    console.log(success);
-                    usersService.create({
-                        accountId: account._id,
-                        name: this.signupName,
-                        pictureUrl: "https://pbs.twimg.com/media/CLI0ZQmUkAA9int.png",
-                        about: "Hey there, I'm using Socialine",
-                        lastConnection: "online",
-                        latitude: success.coords.latitude,
-                        longitude: success.coords.longitude,
-                        maxKmDistance: 5000
-                    }).then(user => {
-                        console.log('user', user);
-                        //this.client = user;
-                        console.log('this.client', this.client);
-                        client.authenticate(Object.assign({ strategy: 'local' }, this.signUpCredentials)).then(resolve => {
-                            this.client = user;
-                            console.log(this.client);
-                            this.loadApp();
+                client.authenticate(Object.assign({ strategy: 'local' }, this.signUpCredentials)).then(resolve => {
+                    navigator.geolocation.getCurrentPosition(success => {
+                        console.log(success);
+                        usersService.create({
+                            accountId: account._id,
+                            name: this.signupName,
+                            pictureUrl: "https://pbs.twimg.com/media/CLI0ZQmUkAA9int.png",
+                            about: "Hey there, I'm using Socialine",
+                            lastConnection: "online",
+                            latitude: success.coords.latitude,
+                            longitude: success.coords.longitude,
+                            maxKmDistance: 5000
+                        }).then(user => {
+                            console.log('user', user);
+                            //this.client = user;
+                            console.log('this.client', this.client);
+                            client.authenticate(Object.assign({ strategy: 'local' }, this.signUpCredentials)).then(resolve => {
+                                this.client = user;
+                                console.log(this.client);
+                                this.loadApp();
+                            });
                         });
+                    }, error => {
+                        console.log(error);
                     });
-                }, error => {
-                    console.log(error);
                 });
             });
         },
         login: function () {
             console.log('login');
-            console.log(localStorage.getItem('feathers-jwt'));
-            if(localStorage.getItem('feathers-jwt')){
-                client.authenticate(Object.assign({ strategy: 'jwt' }, localStorage.getItem('feathers-jwt'))).then(() => {
-                    console.log(token);
-                    console.log(localStorage);
-                    usersService.find().then(result => {
-                        console.log(result);
-                    });
-                    //this.client = user;
-                    //console.log(this.client);
-                    //this.loadApp();
-                });
+            if (localStorage.getItem('feathers-jwt')) {
+                client.authenticate();
+            } else {
+                client.authenticate(Object.assign({ strategy: 'local' }, this.logInCredentials));
             }
-            client.authenticate(Object.assign({ strategy: 'local' }, this.logInCredentials)).then(token => {
-                console.log(token);
-                usersService.find().then(result => {
-                    console.log(result);
+            // TO BE CHANGED TO SERVER-SIDE-BASED AUTHENTICATION
+            accountsService.find({
+                query: {
+                    username: this.logInCredentials.username,
+                    $limit: 1
+                }
+            }).then(result => {
+                console.log(result.data[0]._id);
+                usersService.find({
+                    query: {
+                        accountId: result.data[0]._id
+                    }
+                }).then(result => {
+                    console.log(result.data[0]);
+                    this.client = result.data[0];
+                    this.loadApp();
                 });
-                //this.client = user;
-                //console.log(this.client);
-                //this.loadApp();
             });
         },
         toggleClass: function (element, className) {
