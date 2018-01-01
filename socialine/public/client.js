@@ -33,12 +33,13 @@ var app = new Vue({
         loginPassword: ''
     },
     created: function () {
-        /*if (localStorage.getItem('feathers-jwt')) {
+        if (localStorage.getItem('feathers-jwt') && localStorage.getItem('client')) {
             console.log(localStorage.getItem('feathers-jwt'));
             client.authenticate({ strategy: 'jwt' , accessToken: localStorage.getItem('feathers-jwt')}).then(() => {
+                this.client = JSON.parse(localStorage.getItem('client'));
                 this.loadApp();
             });
-        }*/
+        }
     },
     updated: function () {
         //console.log('updated');
@@ -172,6 +173,7 @@ var app = new Vue({
                     console.log(result.data[0]);
                     this.client = result.data[0];
                     this.loadApp();
+                    localStorage.setItem('client', JSON.stringify(this.client));
                 });
             });
         },
@@ -184,6 +186,12 @@ var app = new Vue({
             }).then(client => {
                 this.client = client;
             })
+        },
+        signOut: function () {
+            localStorage.removeItem('client');
+            localStorage.removeItem('feathers-jwt');
+            this.client = null;
+            location.reload();
         },
         scrollChatBody: function () {
             if (this.client != null) {

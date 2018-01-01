@@ -197,6 +197,7 @@
   color: #757575; }
 
 .main-panel .sidebar .sliding-panel .sliding-body {
+  position: relative;
   height: calc(100% - 60px);
   overflow-y: auto;
   max-height: calc(100% - 60px);
@@ -256,6 +257,31 @@
 .main-panel .sidebar .sliding-panel .sliding-body .input-wrapper .input-row .input-value {
   margin: 3px;
   font-size: 1.3em; }
+
+.main-panel .sidebar .sliding-panel .sliding-body .signout-row {
+  position: sticky;
+  top: 100%;
+  bottom: 0px;
+  width: 100%;
+  min-height: 60px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #a73737;
+  color: #fff; }
+
+@media only screen and (max-width: 800px) {
+  .main-panel .sidebar .sliding-panel .sliding-body .signout-row {
+    min-height: 45px; } }
+
+.main-panel .sidebar .sliding-panel .sliding-body .signout-row:hover {
+  cursor: pointer;
+  background-color: #F0433A; }
+
+.main-panel .sidebar .sliding-panel .sliding-body .signout-row .title {
+  font-size: 1.3em;
+  margin-right: 5px; }
 
 .main-panel .chat-wrapper {
   position: relative;

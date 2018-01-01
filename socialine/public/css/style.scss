@@ -102,6 +102,8 @@ $slider-client-picture-width: 200px;
 
 $slider-modify-button-width: 30px;
 
+$signout-row-height: 35px;
+
 $chat-wrapper-desktop-width: 700px;
 $chat-wrapper-tablet-width: 70%;
 $chat-header-height: $sidebar-header-height;
@@ -369,6 +371,7 @@ $mobile: "only screen and (max-width : 800px)";
             }
 
             .sliding-body{
+                position: relative;
                 height: calc(100% - #{$sidebar-header-height});
                 overflow-y: auto;
                 max-height: calc(100% - #{$sidebar-header-height});
@@ -438,6 +441,34 @@ $mobile: "only screen and (max-width : 800px)";
                             margin: $light-margin;
                             font-size: $slider-input-font-size;
                         }
+                    }
+                }
+
+                .signout-row{
+                    position: sticky;
+                    top: 100%;
+                    bottom: 0px;
+                    width: 100%;
+                    min-height: $chat-input-height;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: $brand-color-dark;
+                    color: $white;
+
+                    @media #{$mobile}{   
+                        min-height: $chat-input-height-mobile;
+                    }
+
+                    &:hover{
+                        cursor: pointer;
+                        background-color: $brand-color;
+                    }
+
+                    .title{
+                        font-size: $slider-input-font-size;
+                        margin-right: $regular-margin;
                     }
                 }
             }
