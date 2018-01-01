@@ -33,8 +33,12 @@ var app = new Vue({
         loginPassword: ''
     },
     created: function () {
-        if (this.client != null) {
-        }
+        /*if (localStorage.getItem('feathers-jwt')) {
+            console.log(localStorage.getItem('feathers-jwt'));
+            client.authenticate({ strategy: 'jwt' , accessToken: localStorage.getItem('feathers-jwt')}).then(() => {
+                this.loadApp();
+            });
+        }*/
     },
     updated: function () {
         //console.log('updated');
@@ -57,6 +61,10 @@ var app = new Vue({
             usersService.on('created', user => {
                 console.log('Realtime', user);
                 this.users.push(user);
+            });
+            usersService.on('patched', patchedUser => {
+                // TO BE REPLACED WITH VUE'S STOREX
+                this.users.splice(this.users.indexOf(this.users.find(user => {return user._id == patchedUser._id})), 1, patchedUser);
             });
             messagesService.find({
                 query: {
@@ -101,11 +109,6 @@ var app = new Vue({
                     timestamp: moment()
                 });
                 this.messageInput = '';
-            }
-        },
-        scrollChatBody: function () {
-            if (this.client != null) {
-                this.$el.querySelector('.chat-body').scrollTop = this.$el.querySelector('.chat-body').scrollHeight;
             }
         },
         signUp: function () {
@@ -171,6 +174,25 @@ var app = new Vue({
                     this.loadApp();
                 });
             });
+        },
+        saveClientUser: function () {
+            usersService.patch(this.client._id, {
+                pictureUrl: this.client.pictureUrl,
+                name: this.client.name,
+                about: this.client.about,
+                maxKmDistance: this.client.maxKmDistance
+            }).then(client => {
+                this.client = client;
+            })
+        },
+        scrollChatBody: function () {
+            if (this.client != null) {
+                this.$el.querySelector('.chat-body').scrollTop = this.$el.querySelector('.chat-body').scrollHeight;
+            }
+        },
+        focusInput: function (id) {
+            console.log('focusinput');
+            this.$el.querySelector(`#${id}`).focus();
         },
         toggleClass: function (element, className) {
             if (element.classList.contains(className)) {

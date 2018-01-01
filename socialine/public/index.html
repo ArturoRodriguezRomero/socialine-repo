@@ -12,7 +12,7 @@
 <body>
   <div class="app-wrapper">
     <div id="app">
-      <div class="main-panel"v-if="client != null">
+      <div class="main-panel" v-if="client != null">
         <div class="sidebar">
           <div class="sidebar-header">
             <div class="item">
@@ -44,8 +44,8 @@
           <div class="sliding-panel">
             <div class="sliding-header">
               <div class="panel-title">Settings</div>
-              <div class="close-panel" v-on:click="toggleSlidingPanel('sliding-panel')">
-                <i class="fas fa-times"></i>
+              <div class="close-panel" v-on:click="toggleSlidingPanel('sliding-panel'); saveClientUser();">
+                <i class="fas fa-save"></i>
               </div>
             </div>
             <div class="sliding-body scrollbar">
@@ -53,8 +53,8 @@
               <div class="input-wrapper">
                 <div class="input-title">Image</div>
                 <div class="input-row">
-                  <input class="textbox" type="text" name="" id="sliderImageInput" :value="client.pictureUrl">
-                  <div class="action-button">
+                  <input class="textbox" type="text" name="" id="sliderImageInput" v-model="client.pictureUrl">
+                  <div class="action-button" v-on:click="focusInput('sliderImageInput')">
                     <i class="fas fa-pencil-alt"></i>
                   </div>
                 </div>
@@ -62,8 +62,8 @@
               <div class="input-wrapper">
                 <div class="input-title">Name</div>
                 <div class="input-row">
-                  <input class="textbox" type="text" name="" id="sliderNameInput" :value="client.name">
-                  <div class="action-button">
+                  <input class="textbox" type="text" name="" id="sliderNameInput" v-model="client.name">
+                  <div class="action-button" v-on:click="focusInput('sliderNameInput')">
                     <i class="fas fa-pencil-alt"></i>
                   </div>
                 </div>
@@ -71,9 +71,18 @@
               <div class="input-wrapper">
                 <div class="input-title">About</div>
                 <div class="input-row">
-                  <input class="textbox" type="text" name="" id="sliderAboutInput" :value="client.about">
-                  <div class="action-button">
+                  <input class="textbox" type="text" name="" id="sliderAboutInput" v-model="client.about">
+                  <div class="action-button" v-on:click="focusInput('sliderAboutInput')">
                     <i class="fas fa-pencil-alt"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="input-wrapper">
+                <div class="input-title">Max distance</div>
+                <div class="input-row">
+                  <input class="textbox" type="range" name="" id="sliderMaxDistanceInput" v-model="client.maxKmDistance" min="1" max="15">
+                  <div class="input-value">
+                    {{client.maxKmDistance}}
                   </div>
                 </div>
               </div>

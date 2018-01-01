@@ -404,6 +404,7 @@ $mobile: "only screen and (max-width : 800px)";
                         display: flex;
                         flex-direction: row;
                         align-items: center;
+                        justify-content: space-between;
 
                         .textbox{
                             width: calc(100% - #{$slider-modify-button-width});
@@ -431,6 +432,11 @@ $mobile: "only screen and (max-width : 800px)";
                                     color: $dark-icon;
                                 }
                             }
+                        }
+
+                        .input-value{
+                            margin: $light-margin;
+                            font-size: $slider-input-font-size;
                         }
                     }
                 }

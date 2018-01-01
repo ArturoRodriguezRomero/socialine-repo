@@ -228,7 +228,8 @@
   position: relative;
   display: flex;
   flex-direction: row;
-  align-items: center; }
+  align-items: center;
+  justify-content: space-between; }
 
 .main-panel .sidebar .sliding-panel .sliding-body .input-wrapper .input-row .textbox {
   width: calc(100% - 30px);
@@ -251,6 +252,10 @@
 .main-panel .sidebar .sliding-panel .sliding-body .input-wrapper .input-row .action-button svg:hover {
   cursor: pointer;
   color: #757575; }
+
+.main-panel .sidebar .sliding-panel .sliding-body .input-wrapper .input-row .input-value {
+  margin: 3px;
+  font-size: 1.3em; }
 
 .main-panel .chat-wrapper {
   position: relative;
