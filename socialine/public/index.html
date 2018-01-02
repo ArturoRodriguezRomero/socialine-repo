@@ -37,7 +37,7 @@
                   <div class="user-name">{{user.name}}</div>
                   <div class="user-about">{{user.about}}</div>
                 </div>
-                <div class="user-new-message"></div>
+                <div class="user-new-message" v-if="clientMessages.find(message => {return message.sender == user._id && !message.readByReceiver })">{{clientMessages.filter(message => {return message.sender == user._id && !message.readByReceiver }).length}}</div>
               </div>
             </div>
           </div>
@@ -109,7 +109,7 @@
               <div class="message" v-for="message in clientMessages" v-if="message.sender == selectedUser._id || message.receiver == selectedUser._id"
                 v-bind:class="[message.sender == client._id ? 'local': '']">
                 <div class="text">{{message.text}}</div>
-                <div class="timestamp">{{message.timestamp | momentTimestamp}}</div>
+                <div class="timestamp" v-bind:class="[message.readByReceiver && message.sender == client._id ? 'read': '']">{{message.timestamp | momentTimestamp}}</div>
               </div>
             </div>
             <div class="splash-screen" v-if="selectedUser._id == undefined">

@@ -14,6 +14,8 @@ $scrollbar-color: #999999;
 $local-message-color: #ffcac9;
 $foreign-message-color: $light-grey;
 
+$message-read-text-color: $brand-color;
+
 /*Typography*/
 
 $text-light: #6e7480;
@@ -27,6 +29,8 @@ $brand-font: 'Source Sans Pro', sans-serif;
 
 $icon-font-size: 1.6em;
 $panel-title-font-size: 1.5em;
+
+$user-new-message-font-size: .7em;
 
 $slider-input-font-size: 1.3em;
 
@@ -94,8 +98,8 @@ $user-item-height: 75px;
 $user-item-picture-height: 50px;
 $user-item-picture-width: 50px;
 
-$user-new-message-height: 7px;
-$user-new-message-width: 7px;
+$user-new-message-height: 13px;
+$user-new-message-width: 13px;
 
 $slider-client-picture-height: 200px;
 $slider-client-picture-width: 200px;
@@ -317,9 +321,12 @@ $mobile: "only screen and (max-width : 800px)";
                         position: absolute;
                         right: 14px;
                         top: 10px;
-                        width: $user-new-message-width;
-                        height: $user-new-message-height;
+                        min-width: $user-new-message-width;
+                        min-height: $user-new-message-height;
+                        padding: $light-padding;
                         background-color: $brand-color;
+                        color: $white;
+                        font-size: $user-new-message-font-size;
                         border-radius: $user-new-message-height;
                         box-shadow: $lighter-box-shadow;
                     }
@@ -588,6 +595,10 @@ $mobile: "only screen and (max-width : 800px)";
 
                         @media #{$mobile}{
                             font-size: $message-timestamp-font-size-mobile;
+                        }
+
+                        &.read{
+                            color: $message-read-text-color;
                         }
                     }
                 }

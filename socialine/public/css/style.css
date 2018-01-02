@@ -152,10 +152,13 @@
   position: absolute;
   right: 14px;
   top: 10px;
-  width: 7px;
-  height: 7px;
+  min-width: 13px;
+  min-height: 13px;
+  padding: 3px;
   background-color: #F0433A;
-  border-radius: 7px;
+  color: #fff;
+  font-size: 0.7em;
+  border-radius: 13px;
   box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2); }
 
 .main-panel .sidebar .sliding-panel {
@@ -386,6 +389,9 @@
 @media only screen and (max-width: 800px) {
   .main-panel .chat-wrapper .chat-body .chat .message .timestamp {
     font-size: 0.6em; } }
+
+.main-panel .chat-wrapper .chat-body .chat .message .timestamp.read {
+  color: #F0433A; }
 
 .main-panel .chat-wrapper .chat-body .chat .foreign {
   background-color: #f8f8f8; }

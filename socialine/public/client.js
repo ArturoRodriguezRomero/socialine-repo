@@ -22,7 +22,6 @@ var app = new Vue({
         clientMessages: [],
         users: [],
         selectedUser: { name: '', pictureUrl: '', about: '', lastConnection: '' },
-        messages: [],
         messageInput: '',
         selectedLogSelector: 'loginLog',
         signupUsername: '',
@@ -35,7 +34,7 @@ var app = new Vue({
     created: function () {
         if (localStorage.getItem('feathers-jwt') && localStorage.getItem('client')) {
             console.log(localStorage.getItem('feathers-jwt'));
-            client.authenticate({ strategy: 'jwt' , accessToken: localStorage.getItem('feathers-jwt')}).then(() => {
+            client.authenticate({ strategy: 'jwt', accessToken: localStorage.getItem('feathers-jwt') }).then(() => {
                 this.client = JSON.parse(localStorage.getItem('client'));
                 this.loadApp();
             });
@@ -43,6 +42,7 @@ var app = new Vue({
     },
     updated: function () {
         //console.log('updated');
+        // TO BE ADDED (IF SO IT ONLY DOES IT PROPERLY)
         this.scrollChatBody();
     },
     computed: {
@@ -65,7 +65,7 @@ var app = new Vue({
             });
             usersService.on('patched', patchedUser => {
                 // TO BE REPLACED WITH VUE'S STOREX
-                this.users.splice(this.users.indexOf(this.users.find(user => {return user._id == patchedUser._id})), 1, patchedUser);
+                this.users.splice(this.users.indexOf(this.users.find(user => { return user._id == patchedUser._id })), 1, patchedUser);
             });
             messagesService.find({
                 query: {
@@ -83,9 +83,13 @@ var app = new Vue({
                 this.clientMessages = messages.data;
             });
             messagesService.on('created', message => {
-                console.log(message);
+                console.log('Realtime', message);
                 this.clientMessages.push(message);
-
+            });
+            messagesService.on('patched', patchedMessage => {
+                // TO BE REPLACED WITH VUE'S STOREX
+                console.log('message patched')
+                this.clientMessages.splice(this.clientMessages.indexOf(this.clientMessages.find(message => {return message._id == patchedMessage._id})), 1, patchedMessage);
             });
         },
         selectUser: function (user) {
@@ -93,6 +97,23 @@ var app = new Vue({
             this.selectedUser = user;
             this.toggleClass(this.$el.querySelector('.sidebar'), 'hidden');
             this.toggleClass(this.$el.querySelector('.chat-wrapper'), 'visible');
+            messagesService.find({
+                query: {
+                    sender: this.selectUser._id,
+                    receiver: this.client._id,
+                    readByReceiver: false
+                }
+            }).then(unreadMessages => {
+                unreadMessages.data.forEach(message => {
+                    console.log('patched');
+                    this.setMessageRead(message._id);
+                });
+            })
+        },
+        setMessageRead: function (id){
+            messagesService.patch(id, {
+                readByReceiver: true
+            });
         },
         toggleSlidingPanel: function (slidingPanelClass) {
             this.toggleClass(this.$el.querySelector(`.${slidingPanelClass}`), 'visible');
@@ -100,6 +121,7 @@ var app = new Vue({
         hideChat: function () {
             this.toggleClass(this.$el.querySelector('.sidebar'), 'hidden');
             this.toggleClass(this.$el.querySelector('.chat-wrapper'), 'visible');
+            this.selectedUser = {_id: ''};
         },
         sendMessage: function () {
             if (this.messageInput != '') {
@@ -107,7 +129,8 @@ var app = new Vue({
                     sender: this.client._id,
                     receiver: this.selectedUser._id,
                     text: this.messageInput,
-                    timestamp: moment()
+                    timestamp: moment(),
+                    readByReceiver: false
                 });
                 this.messageInput = '';
             }
@@ -133,7 +156,7 @@ var app = new Vue({
                             lastConnection: "online",
                             latitude: success.coords.latitude,
                             longitude: success.coords.longitude,
-                            maxKmDistance: 5000
+                            maxKmDistance: 15
                         }).then(user => {
                             console.log('user', user);
                             //this.client = user;
