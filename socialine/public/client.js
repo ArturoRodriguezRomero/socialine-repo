@@ -179,7 +179,7 @@ var app = new Vue({
         },
         login: function () {
             console.log('login');
-
+            // TO BE CHANGED TO SERVER-SIDE-BASED AUTHENTICATION
             client.authenticate(Object.assign({ strategy: 'local' }, this.logInCredentials)).then(token => {
                 client.authenticate().then(() => {
                     accountsService.find({
@@ -202,9 +202,6 @@ var app = new Vue({
                     });
                 });
             });
-
-            // TO BE CHANGED TO SERVER-SIDE-BASED AUTHENTICATION
-
         },
         saveClientUser: function () {
             usersService.patch(this.client._id, {

@@ -87,6 +87,7 @@
   height: 50px;
   width: 50px;
   background-size: cover;
+  background-position: 50% 50%;
   border-radius: 50px; }
 
 .main-panel .sidebar .sidebar-header .item .client-body {
@@ -102,12 +103,10 @@
   position: relative;
   color: #9c9c9c;
   right: 6px;
-  font-size: 1.6em; }
-
-.main-panel .sidebar .sidebar-header .item .client-modify svg {
+  font-size: 1.6em;
   margin-left: 3px; }
 
-.main-panel .sidebar .sidebar-header .item .client-modify svg:hover {
+.main-panel .sidebar .sidebar-header .item .client-modify:hover {
   cursor: pointer;
   color: #757575; }
 
@@ -138,6 +137,7 @@
   height: 50px;
   width: 50px;
   background-size: cover;
+  background-position: 50% 50%;
   border-radius: 50px; }
 
 .main-panel .sidebar .sidebar-body .user-list .user-item .user-body {
@@ -152,13 +152,16 @@
   position: absolute;
   right: 14px;
   top: 10px;
-  min-width: 13px;
-  min-height: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  min-height: 20px;
   padding: 3px;
   background-color: #F0433A;
   color: #fff;
   font-size: 0.7em;
-  border-radius: 13px;
+  border-radius: 20px;
   box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2); }
 
 .main-panel .sidebar .sliding-panel {
@@ -190,12 +193,10 @@
   position: relative;
   color: #9c9c9c;
   right: 6px;
-  font-size: 1.6em; }
-
-.main-panel .sidebar .sliding-panel .sliding-header .close-panel svg {
+  font-size: 1.6em;
   margin-left: 3px; }
 
-.main-panel .sidebar .sliding-panel .sliding-header .close-panel svg:hover {
+.main-panel .sidebar .sliding-panel .sliding-header .close-panel:hover {
   cursor: pointer;
   color: #757575; }
 
@@ -215,6 +216,7 @@
   border-radius: 200px;
   background-color: blacK;
   background-size: cover;
+  background-position: 50% 50%;
   margin: 10px; }
 
 .main-panel .sidebar .sliding-panel .sliding-body .input-wrapper {
@@ -253,7 +255,7 @@
   font-size: 1.6em;
   color: #9c9c9c; }
 
-.main-panel .sidebar .sliding-panel .sliding-body .input-wrapper .input-row .action-button svg:hover {
+.main-panel .sidebar .sliding-panel .sliding-body .input-wrapper .input-row .action-button:hover {
   cursor: pointer;
   color: #757575; }
 
@@ -331,6 +333,7 @@
   height: 50px;
   width: 50px;
   background-size: cover;
+  background-position: 50% 50%;
   border-radius: 50px; }
 
 .main-panel .chat-wrapper .chat-header .receiver-body {

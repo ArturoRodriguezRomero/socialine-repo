@@ -98,8 +98,8 @@ $user-item-height: 75px;
 $user-item-picture-height: 50px;
 $user-item-picture-width: 50px;
 
-$user-new-message-height: 13px;
-$user-new-message-width: 13px;
+$user-new-message-height: 20px;
+$user-new-message-width: 20px;
 
 $slider-client-picture-height: 200px;
 $slider-client-picture-width: 200px;
@@ -231,6 +231,7 @@ $mobile: "only screen and (max-width : 800px)";
                     height: $client-picture-height;
                     width: $client-picture-width;
                     background-size: cover;
+                    background-position: 50% 50%;
                     border-radius: $client-picture-height;
                 }
     
@@ -254,14 +255,11 @@ $mobile: "only screen and (max-width : 800px)";
                     color: $light-icon;
                     right: 6px;
                     font-size: $icon-font-size;
+                    margin-left: $light-margin;
 
-                    svg{
-                        margin-left: $light-margin;
-
-                        &:hover{
-                            cursor: pointer;
-                            color: $dark-icon;
-                        }
+                    &:hover{
+                        cursor: pointer;
+                        color: $dark-icon;
                     }
                 }
             }            
@@ -300,6 +298,7 @@ $mobile: "only screen and (max-width : 800px)";
                         height: $user-item-picture-height;
                         width: $user-item-picture-width;
                         background-size: cover;
+                        background-position: 50% 50%;
                         border-radius: $user-item-picture-width;
                     }
 
@@ -321,6 +320,9 @@ $mobile: "only screen and (max-width : 800px)";
                         position: absolute;
                         right: 14px;
                         top: 10px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
                         min-width: $user-new-message-width;
                         min-height: $user-new-message-height;
                         padding: $light-padding;
@@ -366,13 +368,11 @@ $mobile: "only screen and (max-width : 800px)";
                     right: 6px;
                     font-size: $icon-font-size;
 
-                    svg{
-                        margin-left: $light-margin;
+                    margin-left: $light-margin;
 
-                        &:hover{
-                            cursor: pointer;
-                            color: $dark-icon;
-                        }
+                    &:hover{
+                        cursor: pointer;
+                        color: $dark-icon;
                     }
                 }
             }
@@ -394,6 +394,7 @@ $mobile: "only screen and (max-width : 800px)";
                     border-radius: $slider-client-picture-height;
                     background-color: blacK;
                     background-size: cover;
+                    background-position: 50% 50%;
                     margin: $strong-margin;
                 }
 
@@ -436,11 +437,9 @@ $mobile: "only screen and (max-width : 800px)";
                             font-size: $icon-font-size;
                             color: $light-icon;
 
-                            svg{
-                                &:hover{
-                                    cursor: pointer;
-                                    color: $dark-icon;
-                                }
+                            &:hover{
+                                cursor: pointer;
+                                color: $dark-icon;
                             }
                         }
 
@@ -532,6 +531,7 @@ $mobile: "only screen and (max-width : 800px)";
                 height: $user-item-picture-height;
                 width: $user-item-picture-width;
                 background-size: cover;
+                background-position: 50% 50%;
                 border-radius: $user-item-picture-width;
             }
 
