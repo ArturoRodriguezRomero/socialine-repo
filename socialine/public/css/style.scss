@@ -590,7 +590,6 @@ $mobile: "only screen and (max-width : 800px)";
 
                     .timestamp{
                         font-size: $message-timestamp-font-size-desktop;
-                        align-self: flex-end;
                         color: $text-light;
 
                         @media #{$mobile}{
@@ -616,6 +615,14 @@ $mobile: "only screen and (max-width : 800px)";
                         border: 5px solid;
                         border-color: $foreign-message-color $foreign-message-color transparent transparent;
                     }
+
+                    .timestamp{
+                        align-self: flex-end;
+
+                        .check{
+                            display: none;
+                        }
+                    }
                 }
 
                 .local{
@@ -631,6 +638,14 @@ $mobile: "only screen and (max-width : 800px)";
                         top: 0px;
                         border: 5px solid;
                         border-color: $local-message-color transparent transparent $local-message-color;
+                    }
+
+                    .timestamp{
+                        align-self: flex-end;
+
+                        .check{
+                            margin-left: $regular-margin;
+                        }
                     }
                 }
             }
@@ -858,6 +873,10 @@ $mobile: "only screen and (max-width : 800px)";
                 .action-button{
                     width: 100%;
                     height: 40px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
                     color: $white;
                     background-color: $brand-color;
                     border: none;
@@ -868,6 +887,10 @@ $mobile: "only screen and (max-width : 800px)";
                     &:hover{
                         cursor: pointer;
                         box-shadow: $light-box-shadow;
+                    }
+
+                    .title{
+                        margin-right: $regular-margin;
                     }
                 }
             }

@@ -83,13 +83,17 @@ var app = new Vue({
                 this.clientMessages = messages.data;
             });
             messagesService.on('created', message => {
-                console.log('Realtime', message);
+                console.log('Realtime message', message);
                 this.clientMessages.push(message);
+                console.log(message.sender, this.selectedUser._id)
+                if(message.sender == this.selectedUser._id){
+                    this.setMessageRead(message._id);
+                }
             });
             messagesService.on('patched', patchedMessage => {
                 // TO BE REPLACED WITH VUE'S STOREX
                 console.log('message patched')
-                this.clientMessages.splice(this.clientMessages.indexOf(this.clientMessages.find(message => {return message._id == patchedMessage._id})), 1, patchedMessage);
+                this.clientMessages.splice(this.clientMessages.indexOf(this.clientMessages.find(message => { return message._id == patchedMessage._id })), 1, patchedMessage);
             });
         },
         selectUser: function (user) {
@@ -99,7 +103,7 @@ var app = new Vue({
             this.toggleClass(this.$el.querySelector('.chat-wrapper'), 'visible');
             messagesService.find({
                 query: {
-                    sender: this.selectUser._id,
+                    sender: this.selectedUser._id,
                     receiver: this.client._id,
                     readByReceiver: false
                 }
@@ -110,7 +114,7 @@ var app = new Vue({
                 });
             })
         },
-        setMessageRead: function (id){
+        setMessageRead: function (id) {
             messagesService.patch(id, {
                 readByReceiver: true
             });
@@ -121,7 +125,7 @@ var app = new Vue({
         hideChat: function () {
             this.toggleClass(this.$el.querySelector('.sidebar'), 'hidden');
             this.toggleClass(this.$el.querySelector('.chat-wrapper'), 'visible');
-            this.selectedUser = {_id: ''};
+            this.selectedUser = { _id: '' };
         },
         sendMessage: function () {
             if (this.messageInput != '') {
@@ -175,30 +179,32 @@ var app = new Vue({
         },
         login: function () {
             console.log('login');
-            if (localStorage.getItem('feathers-jwt')) {
-                client.authenticate();
-            } else {
-                client.authenticate(Object.assign({ strategy: 'local' }, this.logInCredentials));
-            }
-            // TO BE CHANGED TO SERVER-SIDE-BASED AUTHENTICATION
-            accountsService.find({
-                query: {
-                    username: this.logInCredentials.username,
-                    $limit: 1
-                }
-            }).then(result => {
-                console.log(result.data[0]._id);
-                usersService.find({
-                    query: {
-                        accountId: result.data[0]._id
-                    }
-                }).then(result => {
-                    console.log(result.data[0]);
-                    this.client = result.data[0];
-                    this.loadApp();
-                    localStorage.setItem('client', JSON.stringify(this.client));
+
+            client.authenticate(Object.assign({ strategy: 'local' }, this.logInCredentials)).then(token => {
+                client.authenticate().then(() => {
+                    accountsService.find({
+                        query: {
+                            username: this.logInCredentials.username,
+                            $limit: 1
+                        }
+                    }).then(result => {
+                        console.log(result.data[0]._id);
+                        usersService.find({
+                            query: {
+                                accountId: result.data[0]._id
+                            }
+                        }).then(result => {
+                            console.log(result.data[0]);
+                            this.client = result.data[0];
+                            this.loadApp();
+                            localStorage.setItem('client', JSON.stringify(this.client));
+                        });
+                    });
                 });
             });
+
+            // TO BE CHANGED TO SERVER-SIDE-BASED AUTHENTICATION
+
         },
         saveClientUser: function () {
             usersService.patch(this.client._id, {

@@ -37,7 +37,8 @@
                   <div class="user-name">{{user.name}}</div>
                   <div class="user-about">{{user.about}}</div>
                 </div>
-                <div class="user-new-message" v-if="clientMessages.find(message => {return message.sender == user._id && !message.readByReceiver })">{{clientMessages.filter(message => {return message.sender == user._id && !message.readByReceiver }).length}}</div>
+                <div class="user-new-message" v-if="clientMessages.find(message => {return message.receiver == client._id && message.sender == user._id && !message.readByReceiver })">{{clientMessages.filter(message => {return message.receiver == client._id && message.sender == user._id &&
+                  !message.readByReceiver }).length}}</div>
               </div>
             </div>
           </div>
@@ -106,10 +107,20 @@
           </div>
           <div class="chat-body scrollbar">
             <div class="chat">
-              <div class="message" v-for="message in clientMessages" v-if="message.sender == selectedUser._id || message.receiver == selectedUser._id"
-                v-bind:class="[message.sender == client._id ? 'local': '']">
+              <div class="message" v-for="message in clientMessages" v-if="message.sender == selectedUser._id && message.receiver == client._id || message.sender == client._id && message.receiver == selectedUser._id"
+                v-bind:class="[message.sender == client._id ? 'local': 'foreign']">
                 <div class="text">{{message.text}}</div>
-                <div class="timestamp" v-bind:class="[message.readByReceiver && message.sender == client._id ? 'read': '']">{{message.timestamp | momentTimestamp}}</div>
+                <div class="timestamp">
+                  {{message.timestamp | momentTimestamp}}
+                  <span class="check">
+                    <span v-if="message.readByReceiver">
+                      <i class="fas fa-check"></i>
+                    </span>
+                    <span v-else>
+                      <i class="far fa-clock"></i>
+                    </span>
+                  </span>
+                </div>
               </div>
             </div>
             <div class="splash-screen" v-if="selectedUser._id == undefined">
@@ -148,7 +159,10 @@
                 <div class="label">Password</div>
                 <input type="password" name="" id="loginPassword" v-model.trim="loginPassword" class="textbox">
               </div>
-              <button class="action-button" v-on:click="login">Log In</button>
+              <button class="action-button" v-on:click="login">
+                <div class="title">Log In</div>
+                <i class="fas fa-sign-in-alt"></i>
+              </button>
             </div>
             <div id="signupLog" class="log signup" v-bind:class="[selectedLogSelector == 'signupLog' ? 'visible': '']">
               <div class="row">
@@ -169,7 +183,10 @@
                 <input type="text" name="" id="signupName" v-model.trim="signupName" class="textbox">
                 <div class="tip">This is the name other users will see. You can always change it.</div>
               </div>
-              <button class="action-button" v-on:click="signUp">Sign up</button>
+              <button class="action-button" v-on:click="signUp">
+                <div class="title">Sign up</div>
+                <i class="fas fa-sign-in-alt"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -191,7 +208,8 @@
 <script src="//unpkg.com/@feathersjs/client@^3.0.0/dist/feathers.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.js"></script>
-<script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
+<!--script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script-->
+<link href="https://use.fontawesome.com/releases/v5.0.2/css/all.css" rel="stylesheet">
 <script src="client.js"></script>
 
 </html>

@@ -383,7 +383,6 @@
 
 .main-panel .chat-wrapper .chat-body .chat .message .timestamp {
   font-size: 0.8em;
-  align-self: flex-end;
   color: #6e7480; }
 
 @media only screen and (max-width: 800px) {
@@ -406,6 +405,12 @@
   border: 5px solid;
   border-color: #f8f8f8 #f8f8f8 transparent transparent; }
 
+.main-panel .chat-wrapper .chat-body .chat .foreign .timestamp {
+  align-self: flex-end; }
+
+.main-panel .chat-wrapper .chat-body .chat .foreign .timestamp .check {
+  display: none; }
+
 .main-panel .chat-wrapper .chat-body .chat .local {
   align-self: flex-end;
   background-color: #ffcac9; }
@@ -419,6 +424,12 @@
   top: 0px;
   border: 5px solid;
   border-color: #ffcac9 transparent transparent #ffcac9; }
+
+.main-panel .chat-wrapper .chat-body .chat .local .timestamp {
+  align-self: flex-end; }
+
+.main-panel .chat-wrapper .chat-body .chat .local .timestamp .check {
+  margin-left: 5px; }
 
 .main-panel .chat-wrapper .chat-body .splash-screen {
   position: absolute;
@@ -614,6 +625,10 @@
 .log-panel .log-table .log-wrapper .log .action-button {
   width: 100%;
   height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   color: #fff;
   background-color: #F0433A;
   border: none;
@@ -624,6 +639,9 @@
 .log-panel .log-table .log-wrapper .log .action-button:hover {
   cursor: pointer;
   box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.2); }
+
+.log-panel .log-table .log-wrapper .log .action-button .title {
+  margin-right: 5px; }
 
 /*Scrollbars*/
 .scrollbar::-webkit-scrollbar-track {
