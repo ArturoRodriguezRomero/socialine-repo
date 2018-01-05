@@ -40,6 +40,9 @@ var app = new Vue({
             });
         }
     },
+    mounted: function () {
+        
+    },
     updated: function () {
         //console.log('updated');
         // TO BE ADDED (IF SO IT ONLY DOES IT PROPERLY)
@@ -58,6 +61,7 @@ var app = new Vue({
             usersService.find().then(users => {
                 console.log('Load', users.data);
                 this.users = users.data;
+                this.setSelectableImageUrl();
             });
             usersService.on('created', user => {
                 console.log('Realtime', user);
@@ -160,7 +164,8 @@ var app = new Vue({
                             lastConnection: "online",
                             latitude: success.coords.latitude,
                             longitude: success.coords.longitude,
-                            maxKmDistance: 15
+                            maxKmDistance: 15,
+                            backgroundImageUrl: 'https://wallpaperscraft.com/image/giau_pass_italy_alps_118374_3840x2400.jpg'
                         }).then(user => {
                             console.log('user', user);
                             //this.client = user;
@@ -208,7 +213,8 @@ var app = new Vue({
                 pictureUrl: this.client.pictureUrl,
                 name: this.client.name,
                 about: this.client.about,
-                maxKmDistance: this.client.maxKmDistance
+                maxKmDistance: this.client.maxKmDistance,
+                backgroundImageUrl: this.client.backgroundImageUrl
             }).then(client => {
                 this.client = client;
             })
@@ -244,6 +250,33 @@ var app = new Vue({
 
             //console.log(12742 * Math.asin(Math.sqrt(a)));
             return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+        },
+        getRandomImage: function (options){
+            //console.log(`https://picsum.photos/${options.grayscale ? 'g/': ''}${options.width ? options.width: '1000'}/${options.height ? options.height: '1000'}${options.blur ? '/?blur': ''}/?random`);
+            return fetch(`https://picsum.photos/${options.grayscale ? 'g/': ''}${options.width ? options.width: '2000'}/${options.height ? options.height: '2000'}${options.blur ? '/?blur': ''}/?random`);
+        },
+        setSelectableImageUrl: function (){
+            console.log('llamada');
+            let elements = this.$el.querySelectorAll('.selectable-image');
+            console.log(elements);
+            elements.forEach(element => {
+                this.getRandomImage({grayscale: false, blur: false}).then(response => {
+                    console.log(response.url);
+                    element.style.backgroundImage = `url(${response.url})`;
+                    element.dataset.url = response.url;
+                });
+            });
+        },
+        selectBackgroundImage: function (event){
+            console.log('selectBackgroundImage');
+            console.log(event.target);
+            let elements = this.$el.querySelectorAll('.selectable-image');
+            elements.forEach(element => {
+                element.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+            this.client.backgroundImageUrl = event.target.dataset.url;
+            console.log(this.client);
         }
     },
     filters: {

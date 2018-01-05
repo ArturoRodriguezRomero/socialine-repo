@@ -12,6 +12,7 @@
 <body>
   <div class="app-wrapper">
     <div id="app">
+      <div class="background-image" v-if="client != null && client.backgroundImageUrl" v-bind:style="{'background-image': 'url(' + client.backgroundImageUrl + ')'}"></div>
       <div class="main-panel" v-if="client != null">
         <div class="sidebar">
           <div class="sidebar-header">
@@ -87,6 +88,23 @@
                   </div>
                 </div>
               </div>
+              <div class="input-wrapper">
+                <div class="input-title">Background Image</div>
+                <div class="input-row">
+                  <div class="hor-scroll scrollbar">
+                    <div class="selectable-image" v-on:click="selectBackgroundImage(event)"></div>
+                    <div class="selectable-image" v-on:click="selectBackgroundImage(event)"></div>
+                    <div class="selectable-image" v-on:click="selectBackgroundImage(event)"></div>
+                    <div class="selectable-image" v-on:click="selectBackgroundImage(event)"></div>
+                    <div class="selectable-image" v-on:click="selectBackgroundImage(event)"></div>
+                    <div class="selectable-image" v-on:click="selectBackgroundImage(event)"></div>
+                    <div class="selectable-image" v-on:click="selectBackgroundImage(event)"></div>
+                    <div class="selectable-image" v-on:click="selectBackgroundImage(event)"></div>
+                    <div class="selectable-image" v-on:click="selectBackgroundImage(event)"></div>
+                    <div class="selectable-image" v-on:click="selectBackgroundImage(event)"></div>
+                  </div>
+                </div>
+              </div>
               <div class="signout-row" v-on:click="signOut">
                 <div class="title">Sign Out</div>
                 <i class="fas fa-sign-out-alt"></i>
@@ -140,6 +158,7 @@
         </div>
       </div>
       <div class="log-panel" v-if="client == null">
+        <div class="background-image"></div>
         <div class="brand-line">
           <div class="app-logo"></div>
           <div class="app-name">Socialine</div>

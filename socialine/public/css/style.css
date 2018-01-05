@@ -14,9 +14,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f8f8f8;
   /*background: linear-gradient(to bottom, $brand-color-dark 0%, $brand-color-dark $app-wrapper-gradient-height, $dark-grey $app-wrapper-gradient-height);*/
-  background-image: url(https://wallpaperscraft.com/image/giau_pass_italy_alps_118374_3840x2400.jpg);
+  /*background-image: url(https://wallpaperscraft.com/image/giau_pass_italy_alps_118374_3840x2400.jpg);*/
   background-size: cover;
   background-position: 50% 50%;
   width: 100%;
@@ -28,6 +27,17 @@
     width: 100%;
     height: 100%; } }
 
+#app .background-image {
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-image: url(https://wallpaperscraft.com/image/giau_pass_italy_alps_118374_3840x2400.jpg);
+  z-index: -1; }
+
 .main-panel {
   display: flex;
   flex-direction: row;
@@ -35,7 +45,8 @@
   height: 95%;
   max-width: 1100px;
   border-radius: 2px;
-  overflow: hidden; }
+  overflow: hidden;
+  z-index: 1; }
 
 @media only screen and (max-width: 1150px) {
   .main-panel {
@@ -124,7 +135,8 @@
   min-height: 75px;
   border-bottom: 1px solid #eee;
   padding: 5px;
-  transition: 0.1s ease; }
+  transition: 0.1s ease;
+  background-color: #f8f8f8; }
 
 .main-panel .sidebar .sidebar-body .user-list .user-item:hover {
   cursor: pointer;
@@ -262,6 +274,44 @@
 .main-panel .sidebar .sliding-panel .sliding-body .input-wrapper .input-row .input-value {
   margin: 3px;
   font-size: 1.3em; }
+
+.main-panel .sidebar .sliding-panel .sliding-body .input-wrapper .input-row .hor-scroll {
+  min-height: 100px;
+  min-width: 100%;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  overflow-x: auto; }
+
+.main-panel .sidebar .sliding-panel .sliding-body .input-wrapper .input-row .hor-scroll .selectable-image {
+  position: relative;
+  min-width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-position: 50% 50%;
+  margin-right: 3px;
+  background-color: #eee; }
+
+.main-panel .sidebar .sliding-panel .sliding-body .input-wrapper .input-row .hor-scroll .selectable-image:hover {
+  cursor: pointer; }
+
+.main-panel .sidebar .sliding-panel .sliding-body .input-wrapper .input-row .hor-scroll .selectable-image.selected::after {
+  content: '\f00c';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 5em;
+  text-decoration: none;
+  pointer-events: none; }
 
 .main-panel .sidebar .sliding-panel .sliding-body .signout-row {
   position: sticky;
@@ -528,6 +578,17 @@
     overflow-y: scroll;
     padding: 10px; } }
 
+.log-panel .background-image {
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-image: url(https://wallpaperscraft.com/image/giau_pass_italy_alps_118374_3840x2400.jpg);
+  z-index: -1; }
+
 .log-panel .brand-line {
   position: absolute;
   top: 0px;
@@ -652,6 +713,7 @@
 
 .scrollbar::-webkit-scrollbar {
   width: 5px;
+  height: 5px;
   background-color: transparent; }
 
 .scrollbar::-webkit-scrollbar-thumb {
