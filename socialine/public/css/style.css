@@ -36,7 +36,8 @@
   background-size: cover;
   background-position: 50% 50%;
   background-image: url(https://wallpaperscraft.com/image/giau_pass_italy_alps_118374_3840x2400.jpg);
-  z-index: -1; }
+  z-index: -1;
+  transition: background-image 0.5s ease-in-out; }
 
 .main-panel {
   display: flex;
@@ -150,7 +151,8 @@
   width: 50px;
   background-size: cover;
   background-position: 50% 50%;
-  border-radius: 50px; }
+  border-radius: 50px;
+  transition: background-image 0.5s ease-in-out; }
 
 .main-panel .sidebar .sidebar-body .user-list .user-item .user-body {
   display: flex;
@@ -229,7 +231,8 @@
   background-color: blacK;
   background-size: cover;
   background-position: 50% 50%;
-  margin: 10px; }
+  margin: 10px;
+  transition: background-image 0.5s ease-in-out; }
 
 .main-panel .sidebar .sliding-panel .sliding-body .input-wrapper {
   width: 100%;
@@ -290,8 +293,7 @@
   height: 100px;
   background-size: cover;
   background-position: 50% 50%;
-  margin-right: 3px;
-  background-color: #eee; }
+  margin-right: 3px; }
 
 .main-panel .sidebar .sliding-panel .sliding-body .input-wrapper .input-row .hor-scroll .selectable-image:hover {
   cursor: pointer; }
@@ -305,6 +307,7 @@
   justify-content: center;
   align-items: center;
   color: #fff;
+  background-color: rgba(0, 0, 0, 0.3);
   text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
   font-family: FontAwesome;
   font-weight: normal;
@@ -384,7 +387,8 @@
   width: 50px;
   background-size: cover;
   background-position: 50% 50%;
-  border-radius: 50px; }
+  border-radius: 50px;
+  transition: background-image 0.5s ease-in-out; }
 
 .main-panel .chat-wrapper .chat-header .receiver-body {
   display: flex;

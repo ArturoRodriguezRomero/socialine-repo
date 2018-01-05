@@ -16,6 +16,8 @@ $foreign-message-color: $light-grey;
 
 $message-read-text-color: $brand-color;
 
+$selected-image-color: rgba(0, 0, 0, 0.3);
+
 /*Typography*/
 
 $text-light: #6e7480;
@@ -175,6 +177,7 @@ $mobile: "only screen and (max-width : 800px)";
         background-position: 50% 50%;
         background-image: url(https://wallpaperscraft.com/image/giau_pass_italy_alps_118374_3840x2400.jpg);
         z-index: -1;
+        transition: background-image 0.5s ease-in-out;
     }
 }
 
@@ -320,6 +323,7 @@ $mobile: "only screen and (max-width : 800px)";
                         background-size: cover;
                         background-position: 50% 50%;
                         border-radius: $user-item-picture-width;
+                        transition: background-image 0.5s ease-in-out;
                     }
 
                     .user-body{
@@ -416,6 +420,7 @@ $mobile: "only screen and (max-width : 800px)";
                     background-size: cover;
                     background-position: 50% 50%;
                     margin: $strong-margin;
+                    transition: background-image 0.5s ease-in-out;
                 }
 
                 .input-wrapper{
@@ -484,7 +489,6 @@ $mobile: "only screen and (max-width : 800px)";
                                 background-size: cover;
                                 background-position: 50% 50%;
                                 margin-right: $light-margin;
-                                background-color: $dark-grey;
 
                                 &:hover{
                                     cursor: pointer;
@@ -499,6 +503,7 @@ $mobile: "only screen and (max-width : 800px)";
                                     justify-content: center;
                                     align-items: center;
                                     color: $white;
+                                    background-color: $selected-image-color;
                                     text-shadow: $regular-text-shadow;
                                     font-family: FontAwesome;
                                     font-weight: normal;
@@ -595,6 +600,7 @@ $mobile: "only screen and (max-width : 800px)";
                 background-size: cover;
                 background-position: 50% 50%;
                 border-radius: $user-item-picture-width;
+                transition: background-image 0.5s ease-in-out;
             }
 
             .receiver-body{

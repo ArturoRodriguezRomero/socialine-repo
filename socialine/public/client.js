@@ -276,6 +276,7 @@ var app = new Vue({
             });
             event.target.classList.add('selected');
             this.client.backgroundImageUrl = event.target.dataset.url;
+            localStorage.setItem('client', JSON.stringify(this.client));
             console.log(this.client);
         }
     },
