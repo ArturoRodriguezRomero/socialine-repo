@@ -31,12 +31,15 @@
           </div>
           <div class="sidebar-body">
             <div class="user-list scrollbar">
-              <div class="user-item" v-for="user in users" v-if="user._id != client._id && kmBetweenLocations(client.latitude, user.latitude, client.longitude, user.longitude) < client.maxKmDistance"
+              <div class="user-item" v-for="user in users" v-if="user._id != client._id && kmBetweenLocations(client.latitude, user.latitude, client.longitude, user.longitude) < client.maxKmDistance && !client.blockedUsers.includes(user._id)"
                 v-on:click="selectUser(user)" v-bind:class="[user._id == selectedUser._id ? 'selected': '']">
                 <div class="user-picture" v-bind:style="{'background-image' : 'url(' + user.pictureUrl +')'}"></div>
                 <div class="user-body">
                   <div class="user-name">{{user.name}}</div>
                   <div class="user-about">{{user.about}}</div>
+                </div>
+                <div class="user-modifiers">
+                  <div class="user-favorite" v-show="client.favoriteUsers.includes(user._id)"><i class="fas fa-heart"></i></div>
                 </div>
                 <div class="user-new-message" v-if="clientMessages.find(message => {return message.receiver == client._id && message.sender == user._id && !message.readByReceiver })">{{clientMessages.filter(message => {return message.receiver == client._id && message.sender == user._id &&
                   !message.readByReceiver }).length}}</div>
@@ -125,8 +128,9 @@
             <div class="expand-settings" v-on:click="expandPanel('receiverSettingsPanel')" v-show="selectedUser._id != null">
               <i class="fas fa-ellipsis-v"></i>
               <div id="receiverSettingsPanel" class="expanded-panel">
-                <div class="item">Favorite user</div>
-                <div class="item">Block user</div>
+                <div class="item" v-show="!client.favoriteUsers.includes(selectedUser._id)" v-on:click="toggleFavoriteUser(selectedUser._id)">Add to Favorites</div>
+                <div class="item" v-show="client.favoriteUsers.includes(selectedUser._id)" v-on:click="toggleFavoriteUser(selectedUser._id)">Remove from Favorites</div>
+                <div class="item" v-on:click="toggleBlockUser(selectedUser._id)">Block user</div>
               </div>
             </div>
           </div>
@@ -134,7 +138,9 @@
             <div class="chat">
               <div class="message" v-for="(message, index) in clientMessages" v-if="message.sender == selectedUser._id && message.receiver == client._id || message.sender == client._id && message.receiver == selectedUser._id"
                 v-bind:class="[message.sender == client._id ? 'local': 'foreign']">
-                <div class="text">{{message.text}}</div>
+                <img class="image" v-if="isUrl(message.text) && isImageUrl(message.text)" :src="message.text"></img>
+                <a v-if="isUrl(message.text)" :href="message.text">{{message.text}}</a>
+                <div class="text" v-else>{{message.text}}</div>
                 <div class="timestamp">
                   {{message.timestamp | momentTimestamp}}
                   <span class="check">

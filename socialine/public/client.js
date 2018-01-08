@@ -105,7 +105,7 @@ var app = new Vue({
             console.log(user);
             this.selectedUser = user;
             this.toggleClass(this.$el.querySelector('.sidebar'), 'hidden');
-            this.toggleClass(this.$el.querySelector('.chat-wrapper'), 'visible');receiverSettingsPanel
+            this.toggleClass(this.$el.querySelector('.chat-wrapper'), 'visible'); receiverSettingsPanel
             this.$el.querySelector('#receiverSettingsPanel').classList.remove('expanded');
             messagesService.find({
                 query: {
@@ -167,7 +167,9 @@ var app = new Vue({
                             latitude: success.coords.latitude,
                             longitude: success.coords.longitude,
                             maxKmDistance: 15,
-                            backgroundImageUrl: 'https://wallpaperscraft.com/image/giau_pass_italy_alps_118374_3840x2400.jpg'
+                            backgroundImageUrl: 'https://wallpaperscraft.com/image/giau_pass_italy_alps_118374_3840x2400.jpg',
+                            blockedUsers: [],
+                            favoriteUsers: []
                         }).then(user => {
                             console.log('user', user);
                             //this.client = user;
@@ -285,6 +287,27 @@ var app = new Vue({
             let element = this.$el.querySelector(`#${id}`);
             this.toggleClass(element, 'expanded');
         },
+        toggleFavoriteUser: function (id) {
+            if (this.client.favoriteUsers.includes(id)) {
+                this.client.favoriteUsers.splice(this.client.favoriteUsers.indexOf(id), 1);
+            } else {
+                this.client.favoriteUsers.push(id);
+            }
+            usersService.patch(this.client._id, {
+                favoriteUsers: this.client.favoriteUsers
+            });
+        },
+        toggleBlockUser: function (id) {
+            if (this.client.blockedUsers.includes(id)) {
+                this.client.blockedUsers.splice(this.client.blockedUsers.indexOf(id), 1);
+            } else {
+                this.client.blockedUsers.push(id);
+            }
+            usersService.patch(this.client._id, {
+                blockedUsers: this.client.blockedUsers
+            });
+            this.selectedUser = { name: '', pictureUrl: '', about: '', lastConnection: '' }
+        },
         isMomentAfter: function (date1, date2, type) {
             console.log('isafter', moment(date1).isAfter(date2, type))
             return moment(date1).isAfter(date2, type);
@@ -295,6 +318,40 @@ var app = new Vue({
             });
             console.log(nextMessage);
             return nextMessage;
+        },
+        testImage: function (url, timeoutT) {
+            return new Promise(function (resolve, reject) {
+                var timeout = timeoutT || 5000;
+                var timer, img = new Image();
+                img.onerror = img.onabort = function () {
+                    clearTimeout(timer);
+                    reject("error");
+                };
+                img.onload = function () {
+                    clearTimeout(timer);
+                    resolve("success");
+                };
+                timer = setTimeout(function () {
+                    // reset .src to invalid URL so it stops previous
+                    // loading, but doesn't trigger new load
+                    img.src = "//!!!!/test.jpg";
+                    reject("timeout");
+                }, timeout);
+                img.src = url;
+            });
+        },
+        isUrl: function (string) {
+            var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+                '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name and extension
+                '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+                '(\\:\\d+)?' + // port
+                '(\\/[-a-z\\d%@_.~+&:]*)*' + // path
+                '(\\?[;&a-z\\d%@_.,~+&:=-]*)?' + // query string
+                '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+            return pattern.test(string);
+        },
+        isImageUrl: function (string) {
+            return (/\.(gif|jpg|jpeg|tiff|png)$/i).test(string)
         }
     },
     filters: {

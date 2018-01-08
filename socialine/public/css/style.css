@@ -161,6 +161,9 @@
 .main-panel .sidebar .sidebar-body .user-list .user-item .user-body .user-name {
   font-weight: 600; }
 
+.main-panel .sidebar .sidebar-body .user-list .user-item .user-modifiers .user-favorite {
+  font-size: 1.6em; }
+
 .main-panel .sidebar .sidebar-body .user-list .user-item .user-new-message {
   position: absolute;
   right: 14px;
@@ -476,6 +479,7 @@
   position: relative;
   width: fit-content;
   min-height: fit-content;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   background-color: #fff;
@@ -483,6 +487,10 @@
   box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.2);
   margin-bottom: 3px;
   border-radius: 2px; }
+
+.main-panel .chat-wrapper .chat-body .chat .message .image {
+  width: fit-content;
+  max-width: 100%; }
 
 .main-panel .chat-wrapper .chat-body .chat .message .text {
   font-size: 1.1em; }
