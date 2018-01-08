@@ -122,10 +122,17 @@
               <div class="receiver-name">{{selectedUser.name}}</div>
               <div class="receiver-last-connection">{{selectedUser.lastConnection}}</div>
             </div>
+            <div class="expand-settings" v-on:click="expandPanel('receiverSettingsPanel')" v-show="selectedUser._id != null">
+              <i class="fas fa-ellipsis-v"></i>
+              <div id="receiverSettingsPanel" class="expanded-panel">
+                <div class="item">Favorite user</div>
+                <div class="item">Block user</div>
+              </div>
+            </div>
           </div>
           <div class="chat-body scrollbar">
             <div class="chat">
-              <div class="message" v-for="message in clientMessages" v-if="message.sender == selectedUser._id && message.receiver == client._id || message.sender == client._id && message.receiver == selectedUser._id"
+              <div class="message" v-for="(message, index) in clientMessages" v-if="message.sender == selectedUser._id && message.receiver == client._id || message.sender == client._id && message.receiver == selectedUser._id"
                 v-bind:class="[message.sender == client._id ? 'local': 'foreign']">
                 <div class="text">{{message.text}}</div>
                 <div class="timestamp">

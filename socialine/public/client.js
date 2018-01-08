@@ -20,6 +20,7 @@ var app = new Vue({
     data: {
         client: null,
         clientMessages: [],
+        selectedUserMessages: [],
         users: [],
         selectedUser: { name: '', pictureUrl: '', about: '', lastConnection: '' },
         messageInput: '',
@@ -41,7 +42,7 @@ var app = new Vue({
         }
     },
     mounted: function () {
-        
+
     },
     updated: function () {
         //console.log('updated');
@@ -90,7 +91,7 @@ var app = new Vue({
                 console.log('Realtime message', message);
                 this.clientMessages.push(message);
                 console.log(message.sender, this.selectedUser._id)
-                if(message.sender == this.selectedUser._id){
+                if (message.sender == this.selectedUser._id) {
                     this.setMessageRead(message._id);
                 }
             });
@@ -104,7 +105,8 @@ var app = new Vue({
             console.log(user);
             this.selectedUser = user;
             this.toggleClass(this.$el.querySelector('.sidebar'), 'hidden');
-            this.toggleClass(this.$el.querySelector('.chat-wrapper'), 'visible');
+            this.toggleClass(this.$el.querySelector('.chat-wrapper'), 'visible');receiverSettingsPanel
+            this.$el.querySelector('#receiverSettingsPanel').classList.remove('expanded');
             messagesService.find({
                 query: {
                     sender: this.selectedUser._id,
@@ -137,7 +139,7 @@ var app = new Vue({
                     sender: this.client._id,
                     receiver: this.selectedUser._id,
                     text: this.messageInput,
-                    timestamp: moment(),
+                    timestamp: moment().utc(),
                     readByReceiver: false
                 });
                 this.messageInput = '';
@@ -231,7 +233,7 @@ var app = new Vue({
             }
         },
         focusInput: function (id) {
-            console.log('focusinput');
+            //console.log('focusinput');
             this.$el.querySelector(`#${id}`).focus();
         },
         toggleClass: function (element, className) {
@@ -251,25 +253,25 @@ var app = new Vue({
             //console.log(12742 * Math.asin(Math.sqrt(a)));
             return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
         },
-        getRandomImage: function (options){
+        getRandomImage: function (options) {
             //console.log(`https://picsum.photos/${options.grayscale ? 'g/': ''}${options.width ? options.width: '1000'}/${options.height ? options.height: '1000'}${options.blur ? '/?blur': ''}/?random`);
-            return fetch(`https://picsum.photos/${options.grayscale ? 'g/': ''}${options.width ? options.width: '2000'}/${options.height ? options.height: '2000'}${options.blur ? '/?blur': ''}/?random`);
+            return fetch(`https://picsum.photos/${options.grayscale ? 'g/' : ''}${options.width ? options.width : '2000'}/${options.height ? options.height : '2000'}${options.blur ? '/?blur' : ''}/?random`);
         },
-        setSelectableImageUrl: function (){
-            console.log('llamada');
+        setSelectableImageUrl: function () {
+            //console.log('llamada');
             let elements = this.$el.querySelectorAll('.selectable-image');
-            console.log(elements);
+            //console.log(elements);
             elements.forEach(element => {
-                this.getRandomImage({grayscale: false, blur: false}).then(response => {
-                    console.log(response.url);
+                this.getRandomImage({ grayscale: false, blur: false }).then(response => {
+                    //console.log(response.url);
                     element.style.backgroundImage = `url(${response.url})`;
                     element.dataset.url = response.url;
                 });
             });
         },
-        selectBackgroundImage: function (event){
-            console.log('selectBackgroundImage');
-            console.log(event.target);
+        selectBackgroundImage: function (event) {
+            //console.log('selectBackgroundImage');
+            //console.log(event.target);
             let elements = this.$el.querySelectorAll('.selectable-image');
             elements.forEach(element => {
                 element.classList.remove('selected');
@@ -277,12 +279,30 @@ var app = new Vue({
             event.target.classList.add('selected');
             this.client.backgroundImageUrl = event.target.dataset.url;
             localStorage.setItem('client', JSON.stringify(this.client));
-            console.log(this.client);
+            //console.log(this.client);
+        },
+        expandPanel: function (id) {
+            let element = this.$el.querySelector(`#${id}`);
+            this.toggleClass(element, 'expanded');
+        },
+        isMomentAfter: function (date1, date2, type) {
+            console.log('isafter', moment(date1).isAfter(date2, type))
+            return moment(date1).isAfter(date2, type);
+        },
+        isMessageAfter: function (index, clientId, selectedUserId) {
+            let nextMessage = this.clientMessages.slice(index).find(item => {
+                return item.receiver == clientId && item.sender == selectedUserId || item.receiver == selectedUserId && item.sender == clientId;
+            });
+            console.log(nextMessage);
+            return nextMessage;
         }
     },
     filters: {
         momentTimestamp: function (date) {
-            return moment(date).format("hh:mm")
+            return moment(date).local().format("LT")
+        },
+        momentDateSeparator: function (date) {
+            return moment(date).local().format("dddd Do MMMM")
         }
     },
 

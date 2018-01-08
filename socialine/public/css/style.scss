@@ -56,6 +56,8 @@ $log-tip-font-size: .9em;
 
 $selected-image-font-size: 5em;
 
+$settings-panel-font-size: 1.4em;
+
 /*Miscelaneous*/
 
 $lighter-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2);
@@ -306,7 +308,6 @@ $mobile: "only screen and (max-width : 800px)";
                     padding: $regular-padding;
 
                     transition: $light-transition;
-                    background-color: $light-grey;
 
                     &:hover{
                         cursor: pointer;
@@ -600,7 +601,6 @@ $mobile: "only screen and (max-width : 800px)";
                 background-size: cover;
                 background-position: 50% 50%;
                 border-radius: $user-item-picture-width;
-                transition: background-image 0.5s ease-in-out;
             }
 
             .receiver-body{
@@ -614,6 +614,59 @@ $mobile: "only screen and (max-width : 800px)";
 
                 .receiver-last-connection{
                     text-transform: capitalize;
+                }
+            }
+
+            .expand-settings{
+                position: absolute;
+                right: 0px;
+                margin-right: $strong-margin;
+                
+                .fas{
+                    font-size: $icon-font-size;
+                    color: $light-icon;
+
+                    &:hover{
+                        color: $dark-icon;
+                        cursor: pointer;
+                    }
+                }
+
+                .expanded-panel{
+                    position: absolute;
+                    right: 20px;
+                    top: 10px;
+                    width: 0px;
+                    height: 0px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: center;
+                    background-color: $light-grey;
+                    font-size: $settings-panel-font-size;
+                    border-radius: $light-border-radius;
+                    transition: $regular-transtition;
+                    overflow: hidden;
+                    z-index: 2;
+
+                    &.expanded{
+                        min-width: fit-content;
+                        padding: $strong-padding;
+                        height: fit-content;
+                        box-shadow: $light-box-shadow;
+                    }
+
+                    .item{
+                        width: 100%;
+                        white-space: nowrap;
+                        margin-top: $regular-margin;
+                        margin-bottom: $regular-margin;
+                        user-select: none;
+
+                        &:hover{
+                            cursor: pointer;
+                        }
+                    }
                 }
             }
         }
@@ -635,6 +688,16 @@ $mobile: "only screen and (max-width : 800px)";
                 height: fit-content;
                 flex-direction: column;
                 padding: $stronger-padding;
+
+                .date-separator{
+                    background-color: $light-grey;
+                    margin-bottom: $strong-margin;
+                    margin-top: $strong-margin;
+                    padding: $regular-margin;
+                    border-radius: $light-border-radius;
+                    box-shadow: $message-shadow;
+                    text-align: center;
+                }
 
                 .message{
                     position: relative;
@@ -685,7 +748,7 @@ $mobile: "only screen and (max-width : 800px)";
                     }
 
                     .timestamp{
-                        align-self: flex-end;
+                        align-self: flex-start;
 
                         .check{
                             display: none;
