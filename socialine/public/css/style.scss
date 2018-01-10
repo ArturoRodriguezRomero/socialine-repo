@@ -489,13 +489,14 @@ $mobile: "only screen and (max-width : 800px)";
                             align-items: center;
                             overflow-x: auto;
 
-                            .selectable-image{
+                            .selectable{
                                 position: relative;
                                 min-width: $hor-scroll-height;
                                 height: $hor-scroll-height;
                                 background-size: cover;
                                 background-position: 50% 50%;
                                 margin-right: $light-margin;
+                                background-color: $dark-grey;
 
                                 &:hover{
                                     cursor: pointer;
@@ -518,6 +519,74 @@ $mobile: "only screen and (max-width : 800px)";
                                     font-size: $selected-image-font-size;
                                     text-decoration:none;
                                     pointer-events: none;
+                                }
+                            }
+                        }
+                    }
+
+                    .input-example{
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-end;
+
+                        .message{
+                            position: relative;
+                            width: fit-content;
+                            min-height: fit-content;
+                            max-width: 100%;
+                            display: flex;
+                            flex-direction: column;
+                            background-color: $white;
+                            padding: $regular-padding;
+                            box-shadow: $message-shadow;
+                            margin-bottom: $light-margin;
+                            border-radius: $light-border-radius;
+
+                            .text{
+                                font-size: $message-text-font-size-desktop;
+        
+                                @media #{$mobile}{
+                                    font-size: $message-text-font-size-mobile;
+                                }
+                            }
+        
+                            .timestamp{
+                                font-size: $message-timestamp-font-size-desktop;
+                                color: $text-light;
+        
+                                @media #{$mobile}{
+                                    font-size: $message-timestamp-font-size-mobile;
+                                }
+        
+                                &.read{
+                                    color: $message-read-text-color;
+                                }
+                            }
+
+                            &.local{
+                                align-self: flex-end;
+                                border-color: inherit;
+    
+                                &::before {
+                                    content: '';
+                                    position: absolute;
+                                    width: 0;
+                                    height: 0;
+                                    right: -9px;
+                                    top: 0px;
+                                    border: 5px solid;
+                                    border-left-color: inherit;
+                                    border-top-color: inherit;
+                                    border-right-color: transparent;
+                                    border-bottom-color: transparent;
+                                }
+            
+                                .timestamp{
+                                    align-self: flex-end;
+            
+                                    .check{
+                                        margin-left: $regular-margin;
+                                    }
                                 }
                             }
                         }
@@ -720,7 +789,7 @@ $mobile: "only screen and (max-width : 800px)";
 
                     .image{
                         width: fit-content;
-                        max-width: 100%;
+                        max-width: 300px;
                     }
 
                     .text{
@@ -729,6 +798,10 @@ $mobile: "only screen and (max-width : 800px)";
                         @media #{$mobile}{
                             font-size: $message-text-font-size-mobile;
                         }
+                    }
+
+                    .link{
+                        word-break: break-all;
                     }
 
                     .timestamp{
@@ -743,54 +816,60 @@ $mobile: "only screen and (max-width : 800px)";
                             color: $message-read-text-color;
                         }
                     }
-                }
 
-                .foreign{
-                    background-color: $foreign-message-color;
-
-                    &::before {
-                        content: '';
-                        position: absolute;
-                        width: 0;
-                        height: 0;
-                        left: -9px;
-                        top: 0px;
-                        border: 5px solid;
-                        border-color: $foreign-message-color $foreign-message-color transparent transparent;
-                    }
-
-                    .timestamp{
-                        align-self: flex-start;
-
-                        .check{
-                            display: none;
+                    &.foreign{
+                        background-color: $foreign-message-color;
+    
+                        &::before {
+                            content: '';
+                            position: absolute;
+                            width: 0;
+                            height: 0;
+                            left: -9px;
+                            top: 0px;
+                            border: 5px solid;
+                            border-color: $foreign-message-color $foreign-message-color transparent transparent;
+                        }
+    
+                        .timestamp{
+                            align-self: flex-start;
+    
+                            .check{
+                                display: none;
+                            }
                         }
                     }
-                }
-
-                .local{
-                    align-self: flex-end;
-                    background-color: $local-message-color;
-
-                    &::before {
-                        content: '';
-                        position: absolute;
-                        width: 0;
-                        height: 0;
-                        right: -9px;
-                        top: 0px;
-                        border: 5px solid;
-                        border-color: $local-message-color transparent transparent $local-message-color;
-                    }
-
-                    .timestamp{
+    
+                    &.local{
                         align-self: flex-end;
-
-                        .check{
-                            margin-left: $regular-margin;
+                        background-color: $local-message-color;
+                        border-color: inherit;
+    
+                        &::before {
+                            content: '';
+                            position: absolute;
+                            width: 0;
+                            height: 0;
+                            right: -9px;
+                            top: 0px;
+                            border: 5px solid;
+                            border-left-color: inherit;
+                            border-top-color: inherit;
+                            border-right-color: transparent;
+                            border-bottom-color: transparent;
+                        }
+    
+                        .timestamp{
+                            align-self: flex-end;
+    
+                            .check{
+                                margin-left: $regular-margin;
+                            }
                         }
                     }
                 }
+
+                
             }
 
             .splash-screen{

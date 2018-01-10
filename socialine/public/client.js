@@ -71,6 +71,9 @@ var app = new Vue({
             usersService.on('patched', patchedUser => {
                 // TO BE REPLACED WITH VUE'S STOREX
                 this.users.splice(this.users.indexOf(this.users.find(user => { return user._id == patchedUser._id })), 1, patchedUser);
+                if(patchedUser._id == this.selectedUser._id){
+                    this.selectedUser = patchedUser;
+                }
             });
             messagesService.find({
                 query: {
@@ -80,7 +83,7 @@ var app = new Vue({
                         { receiver: this.client._id }
                     ],
                     $sort: {
-                        timestamp: 1
+                        timestamp: -1
                     }
                 }
             }).then(messages => {
@@ -89,7 +92,7 @@ var app = new Vue({
             });
             messagesService.on('created', message => {
                 console.log('Realtime message', message);
-                this.clientMessages.push(message);
+                this.clientMessages.unshift(message);
                 console.log(message.sender, this.selectedUser._id)
                 if (message.sender == this.selectedUser._id) {
                     this.setMessageRead(message._id);
@@ -169,7 +172,8 @@ var app = new Vue({
                             maxKmDistance: 15,
                             backgroundImageUrl: 'https://wallpaperscraft.com/image/giau_pass_italy_alps_118374_3840x2400.jpg',
                             blockedUsers: [],
-                            favoriteUsers: []
+                            favoriteUsers: [],
+                            localMessageColor: '#ffcac9'
                         }).then(user => {
                             console.log('user', user);
                             //this.client = user;
@@ -218,10 +222,12 @@ var app = new Vue({
                 name: this.client.name,
                 about: this.client.about,
                 maxKmDistance: this.client.maxKmDistance,
-                backgroundImageUrl: this.client.backgroundImageUrl
+                backgroundImageUrl: this.client.backgroundImageUrl,
+                localMessageColor: this.client.localMessageColor
             }).then(client => {
                 this.client = client;
-            })
+                localStorage.setItem('client', JSON.stringify(this.client));
+            });
         },
         signOut: function () {
             localStorage.removeItem('client');
@@ -261,7 +267,7 @@ var app = new Vue({
         },
         setSelectableImageUrl: function () {
             //console.log('llamada');
-            let elements = this.$el.querySelectorAll('.selectable-image');
+            let elements = this.$el.querySelectorAll('.selectable.image');
             //console.log(elements);
             elements.forEach(element => {
                 this.getRandomImage({ grayscale: false, blur: false }).then(response => {
@@ -274,14 +280,23 @@ var app = new Vue({
         selectBackgroundImage: function (event) {
             //console.log('selectBackgroundImage');
             //console.log(event.target);
-            let elements = this.$el.querySelectorAll('.selectable-image');
+            let elements = this.$el.querySelectorAll('.selectable.image');
             elements.forEach(element => {
                 element.classList.remove('selected');
             });
             event.target.classList.add('selected');
             this.client.backgroundImageUrl = event.target.dataset.url;
-            localStorage.setItem('client', JSON.stringify(this.client));
+            //localStorage.setItem('client', JSON.stringify(this.client));
             //console.log(this.client);
+        },
+        selectMessageColor: function (event) {
+            let elements = this.$el.querySelectorAll('.selectable.color');
+            elements.forEach(element => {
+                element.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+            this.client.localMessageColor = event.target.dataset.color;
+            this.saveClientUser();
         },
         expandPanel: function (id) {
             let element = this.$el.querySelector(`#${id}`);

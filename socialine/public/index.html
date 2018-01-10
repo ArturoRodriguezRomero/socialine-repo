@@ -39,7 +39,9 @@
                   <div class="user-about">{{user.about}}</div>
                 </div>
                 <div class="user-modifiers">
-                  <div class="user-favorite" v-show="client.favoriteUsers.includes(user._id)"><i class="fas fa-heart"></i></div>
+                  <div class="user-favorite" v-show="client.favoriteUsers.includes(user._id)">
+                    <i class="fas fa-heart"></i>
+                  </div>
                 </div>
                 <div class="user-new-message" v-if="clientMessages.find(message => {return message.receiver == client._id && message.sender == user._id && !message.readByReceiver })">{{clientMessages.filter(message => {return message.receiver == client._id && message.sender == user._id &&
                   !message.readByReceiver }).length}}</div>
@@ -59,27 +61,27 @@
                 <div class="input-title">Image</div>
                 <div class="input-row">
                   <input class="textbox" type="text" name="" id="sliderImageInput" v-model="client.pictureUrl">
-                  <div class="action-button" v-on:click="focusInput('sliderImageInput')">
+                  <!--div class="action-button" v-on:click="focusInput('sliderImageInput')">
                     <i class="fas fa-pencil-alt"></i>
-                  </div>
+                  </div-->
                 </div>
               </div>
               <div class="input-wrapper">
                 <div class="input-title">Name</div>
                 <div class="input-row">
                   <input class="textbox" type="text" name="" id="sliderNameInput" v-model="client.name">
-                  <div class="action-button" v-on:click="focusInput('sliderNameInput')">
+                  <!--div class="action-button" v-on:click="focusInput('sliderNameInput')">
                     <i class="fas fa-pencil-alt"></i>
-                  </div>
+                  </div-->
                 </div>
               </div>
               <div class="input-wrapper">
                 <div class="input-title">About</div>
                 <div class="input-row">
                   <input class="textbox" type="text" name="" id="sliderAboutInput" v-model="client.about">
-                  <div class="action-button" v-on:click="focusInput('sliderAboutInput')">
+                  <!--div class="action-button" v-on:click="focusInput('sliderAboutInput')">
                     <i class="fas fa-pencil-alt"></i>
-                  </div>
+                  </div-->
                 </div>
               </div>
               <div class="input-wrapper">
@@ -87,7 +89,7 @@
                 <div class="input-row">
                   <input class="textbox" type="range" name="" id="sliderMaxDistanceInput" v-model="client.maxKmDistance" min="1" max="15">
                   <div class="input-value">
-                    {{client.maxKmDistance}}
+                    {{client.maxKmDistance}}Km
                   </div>
                 </div>
               </div>
@@ -95,16 +97,42 @@
                 <div class="input-title">Background Image</div>
                 <div class="input-row">
                   <div class="hor-scroll scrollbar">
-                    <div class="selectable-image" v-on:click="selectBackgroundImage(event)"></div>
-                    <div class="selectable-image" v-on:click="selectBackgroundImage(event)"></div>
-                    <div class="selectable-image" v-on:click="selectBackgroundImage(event)"></div>
-                    <div class="selectable-image" v-on:click="selectBackgroundImage(event)"></div>
-                    <div class="selectable-image" v-on:click="selectBackgroundImage(event)"></div>
-                    <div class="selectable-image" v-on:click="selectBackgroundImage(event)"></div>
-                    <div class="selectable-image" v-on:click="selectBackgroundImage(event)"></div>
-                    <div class="selectable-image" v-on:click="selectBackgroundImage(event)"></div>
-                    <div class="selectable-image" v-on:click="selectBackgroundImage(event)"></div>
-                    <div class="selectable-image" v-on:click="selectBackgroundImage(event)"></div>
+                    <div class="selectable image" v-on:click="selectBackgroundImage(event)"></div>
+                    <div class="selectable image" v-on:click="selectBackgroundImage(event)"></div>
+                    <div class="selectable image" v-on:click="selectBackgroundImage(event)"></div>
+                    <div class="selectable image" v-on:click="selectBackgroundImage(event)"></div>
+                    <div class="selectable image" v-on:click="selectBackgroundImage(event)"></div>
+                    <div class="selectable image" v-on:click="selectBackgroundImage(event)"></div>
+                    <div class="selectable image" v-on:click="selectBackgroundImage(event)"></div>
+                    <div class="selectable image" v-on:click="selectBackgroundImage(event)"></div>
+                    <div class="selectable image" v-on:click="selectBackgroundImage(event)"></div>
+                    <div class="selectable image" v-on:click="selectBackgroundImage(event)"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="input-wrapper">
+                <div class="input-title">Message Color</div>
+                <div class="input-example">
+                  <div class="message local" v-bind:style="{ 'background-color': client.localMessageColor, 'border-color': client.localMessageColor}">
+                    <div class="text">Hey there! I'm changing my settings!</div>
+                    <div class="timestamp">
+                      12:07 PM
+                      <span class="check">
+                        <span>
+                          <i class="fas fa-check"></i>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="input-row">
+                  <div class="hor-scroll scrollbar">
+                    <div class="selectable color" v-on:click="selectMessageColor(event)" data-color="#ffcac9" style="background-color: #ffcac9;"></div>
+                    <div class="selectable color" v-on:click="selectMessageColor(event)" data-color="lightblue" style="background-color: lightblue"></div>
+                    <div class="selectable color" v-on:click="selectMessageColor(event)" data-color="lightgreen" style="background-color: lightgreen"></div>
+                    <div class="selectable color" v-on:click="selectMessageColor(event)" data-color="lightsalmon" style="background-color: lightsalmon"></div>
+                    <div class="selectable color" v-on:click="selectMessageColor(event)" data-color="lightseagreen" style="background-color: lightseagreen"></div>
+                    <div class="selectable color" v-on:click="selectMessageColor(event)" data-color="lightgoldenrodyellow" style="background-color: lightgoldenrodyellow"></div>
                   </div>
                 </div>
               </div>
@@ -136,11 +164,11 @@
           </div>
           <div class="chat-body scrollbar">
             <div class="chat">
-              <div class="message" v-for="(message, index) in clientMessages" v-if="message.sender == selectedUser._id && message.receiver == client._id || message.sender == client._id && message.receiver == selectedUser._id"
-                v-bind:class="[message.sender == client._id ? 'local': 'foreign']">
+              <div class="message" v-for="(message, index) in clientMessages.slice().reverse()" v-if="message.sender == selectedUser._id && message.receiver == client._id || message.sender == client._id && message.receiver == selectedUser._id"
+                v-bind:class="[message.sender == client._id ? 'local': 'foreign']" v-bind:style="{ 'background-color': message.sender == client._id ? client.localMessageColor : null, 'border-color': message.sender == client._id ? client.localMessageColor : null  }">
                 <img class="image" v-if="isUrl(message.text) && isImageUrl(message.text)" :src="message.text"></img>
-                <a v-if="isUrl(message.text)" :href="message.text">{{message.text}}</a>
-                <div class="text" v-else>{{message.text}}</div>
+                <a class="link" v-if="isUrl(message.text) && !isImageUrl(message.text)" :href="message.text" target="_blank">{{message.text}}</a>
+                <div class="text" v-else-if="!isImageUrl(message.text)">{{message.text}}</div>
                 <div class="timestamp">
                   {{message.timestamp | momentTimestamp}}
                   <span class="check">
