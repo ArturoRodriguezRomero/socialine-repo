@@ -30,7 +30,8 @@ var app = new Vue({
         signupConfirmPassword: '',
         signupName: '',
         loginUsername: '',
-        loginPassword: ''
+        loginPassword: '',
+        unreadMessages: 0
     },
     created: function () {
         if (localStorage.getItem('feathers-jwt') && localStorage.getItem('client')) {
@@ -71,7 +72,7 @@ var app = new Vue({
             usersService.on('patched', patchedUser => {
                 // TO BE REPLACED WITH VUE'S STOREX
                 this.users.splice(this.users.indexOf(this.users.find(user => { return user._id == patchedUser._id })), 1, patchedUser);
-                if(patchedUser._id == this.selectedUser._id){
+                if (patchedUser._id == this.selectedUser._id) {
                     this.selectedUser = patchedUser;
                 }
             });
@@ -91,11 +92,24 @@ var app = new Vue({
                 this.clientMessages = messages.data;
             });
             messagesService.on('created', message => {
-                console.log('Realtime message', message);
-                this.clientMessages.unshift(message);
-                console.log(message.sender, this.selectedUser._id)
-                if (message.sender == this.selectedUser._id) {
-                    this.setMessageRead(message._id);
+                if (message.sender == this.client._id || message.receiver == this.client._id) {
+                    console.log('Realtime user message', message);
+                    this.clientMessages.unshift(message);
+                    console.log(message.sender, this.selectedUser._id)
+                    if (message.sender == this.selectedUser._id && message.receiver == this.client._id) {
+                        this.setMessageRead(message._id);
+                    }
+                    if (message.receiver == this.client._id) {
+                        this.unreadMessages++;
+                        this.documentTitleNotification(this.unreadMessages);
+                    }
+                    console.log('hasfocus', document.hasFocus())
+                    if(!document.hasFocus() && message.receiver == this.client._id){
+                        usersService.get(message.sender).then(user => {
+                            this.desktopNotification({user: user.name, body: message.text, icon: user.pictureUrl});
+                        });
+                        
+                    }
                 }
             });
             messagesService.on('patched', patchedMessage => {
@@ -103,6 +117,7 @@ var app = new Vue({
                 console.log('message patched')
                 this.clientMessages.splice(this.clientMessages.indexOf(this.clientMessages.find(message => { return message._id == patchedMessage._id })), 1, patchedMessage);
             });
+            this.getUnreadMessages();
         },
         selectUser: function (user) {
             console.log(user);
@@ -121,12 +136,27 @@ var app = new Vue({
                     console.log('patched');
                     this.setMessageRead(message._id);
                 });
+
             })
         },
         setMessageRead: function (id) {
             messagesService.patch(id, {
                 readByReceiver: true
             });
+            this.unreadMessages--;
+            this.documentTitleNotification(this.unreadMessages);
+        },
+        getUnreadMessages: function () {
+            messagesService.find({
+                query: {
+                    receiver: this.client._id,
+                    readByReceiver: false
+                }
+            }).then(unreadMessages => {
+                this.unreadMessages = unreadMessages.data.length;
+                this.documentTitleNotification(unreadMessages.data.length);
+                return unreadMessages.data;
+            })
         },
         toggleSlidingPanel: function (slidingPanelClass) {
             this.toggleClass(this.$el.querySelector(`.${slidingPanelClass}`), 'visible');
@@ -176,7 +206,6 @@ var app = new Vue({
                             localMessageColor: '#ffcac9'
                         }).then(user => {
                             console.log('user', user);
-                            //this.client = user;
                             console.log('this.client', this.client);
                             client.authenticate(Object.assign({ strategy: 'local' }, this.signUpCredentials)).then(resolve => {
                                 this.client = user;
@@ -201,13 +230,11 @@ var app = new Vue({
                             $limit: 1
                         }
                     }).then(result => {
-                        console.log(result.data[0]._id);
                         usersService.find({
                             query: {
                                 accountId: result.data[0]._id
                             }
                         }).then(result => {
-                            console.log(result.data[0]);
                             this.client = result.data[0];
                             this.loadApp();
                             localStorage.setItem('client', JSON.stringify(this.client));
@@ -223,7 +250,9 @@ var app = new Vue({
                 about: this.client.about,
                 maxKmDistance: this.client.maxKmDistance,
                 backgroundImageUrl: this.client.backgroundImageUrl,
-                localMessageColor: this.client.localMessageColor
+                localMessageColor: this.client.localMessageColor,
+                favoriteUsers: this.client.favoriteUsers,
+                blockedUsers: this.client.blockedUsers
             }).then(client => {
                 this.client = client;
                 localStorage.setItem('client', JSON.stringify(this.client));
@@ -241,7 +270,6 @@ var app = new Vue({
             }
         },
         focusInput: function (id) {
-            //console.log('focusinput');
             this.$el.querySelector(`#${id}`).focus();
         },
         toggleClass: function (element, className) {
@@ -258,36 +286,27 @@ var app = new Vue({
                 c(lat1 * p) * c(lat2 * p) *
                 (1 - c((lon2 - lon1) * p)) / 2;
 
-            //console.log(12742 * Math.asin(Math.sqrt(a)));
             return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
         },
         getRandomImage: function (options) {
-            //console.log(`https://picsum.photos/${options.grayscale ? 'g/': ''}${options.width ? options.width: '1000'}/${options.height ? options.height: '1000'}${options.blur ? '/?blur': ''}/?random`);
             return fetch(`https://picsum.photos/${options.grayscale ? 'g/' : ''}${options.width ? options.width : '2000'}/${options.height ? options.height : '2000'}${options.blur ? '/?blur' : ''}/?random`);
         },
         setSelectableImageUrl: function () {
-            //console.log('llamada');
             let elements = this.$el.querySelectorAll('.selectable.image');
-            //console.log(elements);
             elements.forEach(element => {
                 this.getRandomImage({ grayscale: false, blur: false }).then(response => {
-                    //console.log(response.url);
                     element.style.backgroundImage = `url(${response.url})`;
                     element.dataset.url = response.url;
                 });
             });
         },
         selectBackgroundImage: function (event) {
-            //console.log('selectBackgroundImage');
-            //console.log(event.target);
             let elements = this.$el.querySelectorAll('.selectable.image');
             elements.forEach(element => {
                 element.classList.remove('selected');
             });
             event.target.classList.add('selected');
             this.client.backgroundImageUrl = event.target.dataset.url;
-            //localStorage.setItem('client', JSON.stringify(this.client));
-            //console.log(this.client);
         },
         selectMessageColor: function (event) {
             let elements = this.$el.querySelectorAll('.selectable.color');
@@ -308,9 +327,7 @@ var app = new Vue({
             } else {
                 this.client.favoriteUsers.push(id);
             }
-            usersService.patch(this.client._id, {
-                favoriteUsers: this.client.favoriteUsers
-            });
+            this.saveClientUser();
         },
         toggleBlockUser: function (id) {
             if (this.client.blockedUsers.includes(id)) {
@@ -318,10 +335,13 @@ var app = new Vue({
             } else {
                 this.client.blockedUsers.push(id);
             }
-            usersService.patch(this.client._id, {
-                blockedUsers: this.client.blockedUsers
-            });
+            this.saveClientUser();
             this.selectedUser = { name: '', pictureUrl: '', about: '', lastConnection: '' }
+        },
+        unblockAllUsers: function () {
+            console.log('unblock all')
+            this.client.blockedUsers = [];
+            this.saveClientUser();
         },
         isMomentAfter: function (date1, date2, type) {
             console.log('isafter', moment(date1).isAfter(date2, type))
@@ -367,6 +387,21 @@ var app = new Vue({
         },
         isImageUrl: function (string) {
             return (/\.(gif|jpg|jpeg|tiff|png)$/i).test(string)
+        },
+        documentTitleNotification: function (number) {
+            if (number <= 0) {
+                document.title = `Socialine`;
+            } else {
+                document.title = `Socialine (${number})`;
+            }
+        },
+        desktopNotification: function (options) {
+            if (Notification.permission !== 'denied') {
+                Notification.requestPermission();
+            }
+            if (Notification.permission === 'granted') {
+                var notification = new Notification(options.user, { body: options.body, icon: options.icon});
+            }
         }
     },
     filters: {

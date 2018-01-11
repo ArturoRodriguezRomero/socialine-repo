@@ -252,7 +252,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between; }
+  justify-content: center; }
 
 .main-panel .sidebar .sliding-panel .sliding-body .input-wrapper .input-row .textbox {
   width: calc(100% - 30px);
@@ -318,6 +318,23 @@
   font-size: 5em;
   text-decoration: none;
   pointer-events: none; }
+
+.main-panel .sidebar .sliding-panel .sliding-body .input-wrapper .input-row .button {
+  width: 80%;
+  padding: 3px;
+  font-size: 1.3em;
+  background-color: #F0433A;
+  color: #fff;
+  border-radius: 2px;
+  border: none;
+  transition: 0.1s ease; }
+
+.main-panel .sidebar .sliding-panel .sliding-body .input-wrapper .input-row .button:hover {
+  cursor: pointer;
+  box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.2); }
+
+.main-panel .sidebar .sliding-panel .sliding-body .input-wrapper .input-row .button:active {
+  box-shadow: none; }
 
 .main-panel .sidebar .sliding-panel .sliding-body .input-wrapper .input-example {
   display: flex;

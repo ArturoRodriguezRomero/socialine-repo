@@ -447,7 +447,7 @@ $mobile: "only screen and (max-width : 800px)";
                         display: flex;
                         flex-direction: row;
                         align-items: center;
-                        justify-content: space-between;
+                        justify-content: center;
 
                         .textbox{
                             width: calc(100% - #{$slider-modify-button-width});
@@ -520,6 +520,26 @@ $mobile: "only screen and (max-width : 800px)";
                                     text-decoration:none;
                                     pointer-events: none;
                                 }
+                            }
+                        }
+
+                        .button{
+                            width: 80%;
+                            padding: $light-padding;
+                            font-size: $slider-input-font-size;
+                            background-color: $brand-color;
+                            color: $white;
+                            border-radius: $light-border-radius;
+                            border: none;
+                            transition: $light-transition;
+
+                            &:hover{
+                                cursor: pointer;
+                                box-shadow: $light-box-shadow;
+                            }
+
+                            &:active{
+                                box-shadow: none;
                             }
                         }
                     }
