@@ -157,7 +157,8 @@
             <div class="receiver-picture" v-bind:style="{ 'background-image': 'url(' + selectedUser.pictureUrl + ')' }"></div>
             <div class="receiver-body">
               <div class="receiver-name">{{selectedUser.name}}</div>
-              <div class="receiver-last-connection">{{selectedUser.lastConnection}}</div>
+              <div class="receiver-last-connection" v-if="selectedUser.lastConnection == 'online'">{{selectedUser.lastConnection}}</div>
+              <div class="receiver-last-connection" v-else-if="selectedUser.lastConnection != ''">{{selectedUser.lastConnection | momentLastConnection}}</div>
             </div>
             <div class="expand-settings" v-on:click="expandPanel('receiverSettingsPanel')" v-show="selectedUser._id != null">
               <i class="fas fa-ellipsis-v"></i>

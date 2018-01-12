@@ -104,11 +104,11 @@ var app = new Vue({
                         this.documentTitleNotification(this.unreadMessages);
                     }
                     console.log('hasfocus', document.hasFocus())
-                    if(!document.hasFocus() && message.receiver == this.client._id){
+                    if (!document.hasFocus() && message.receiver == this.client._id) {
                         usersService.get(message.sender).then(user => {
-                            this.desktopNotification({user: user.name, body: message.text, icon: user.pictureUrl});
+                            this.desktopNotification({ user: user.name, body: message.text, icon: user.pictureUrl });
                         });
-                        
+
                     }
                 }
             });
@@ -118,6 +118,18 @@ var app = new Vue({
                 this.clientMessages.splice(this.clientMessages.indexOf(this.clientMessages.find(message => { return message._id == patchedMessage._id })), 1, patchedMessage);
             });
             this.getUnreadMessages();
+            this.client.lastConnection = 'online';
+            this.saveClientUser();
+            window.addEventListener('beforeunload', event => {
+                this.client.lastConnection = moment().utc();
+                this.saveClientUser();
+            });
+            this.getGeoLocation().then(result => {
+                result.json().then(json => {
+                    this.client.latitude = json.latitude;
+                    this.client.longitude = json.longitude;
+                });
+            });
         },
         selectUser: function (user) {
             console.log(user);
@@ -189,32 +201,33 @@ var app = new Vue({
             }).then(account => {
                 console.log(account);
                 client.authenticate(Object.assign({ strategy: 'local' }, this.signUpCredentials)).then(resolve => {
-                    navigator.geolocation.getCurrentPosition(success => {
-                        console.log(success);
-                        usersService.create({
-                            accountId: account._id,
-                            name: this.signupName,
-                            pictureUrl: "https://pbs.twimg.com/media/CLI0ZQmUkAA9int.png",
-                            about: "Hey there, I'm using Socialine",
-                            lastConnection: "online",
-                            latitude: success.coords.latitude,
-                            longitude: success.coords.longitude,
-                            maxKmDistance: 15,
-                            backgroundImageUrl: 'https://wallpaperscraft.com/image/giau_pass_italy_alps_118374_3840x2400.jpg',
-                            blockedUsers: [],
-                            favoriteUsers: [],
-                            localMessageColor: '#ffcac9'
-                        }).then(user => {
-                            console.log('user', user);
-                            console.log('this.client', this.client);
-                            client.authenticate(Object.assign({ strategy: 'local' }, this.signUpCredentials)).then(resolve => {
-                                this.client = user;
-                                console.log(this.client);
-                                this.loadApp();
+                    this.getGeoLocation().then(result => {
+                        result.json().then(json => {
+                            let latitude = json.latitude;
+                            let longitude = json.longitude;
+                            usersService.create({
+                                accountId: account._id,
+                                name: this.signupName,
+                                pictureUrl: "https://pbs.twimg.com/media/CLI0ZQmUkAA9int.png",
+                                about: "Hey there, I'm using Socialine",
+                                lastConnection: "online",
+                                latitude: latitude,
+                                longitude: longitude,
+                                maxKmDistance: 15,
+                                backgroundImageUrl: 'https://wallpaperscraft.com/image/giau_pass_italy_alps_118374_3840x2400.jpg',
+                                blockedUsers: [],
+                                favoriteUsers: [],
+                                localMessageColor: '#ffcac9'
+                            }).then(user => {
+                                console.log('user', user);
+                                console.log('this.client', this.client);
+                                client.authenticate(Object.assign({ strategy: 'local' }, this.signUpCredentials)).then(resolve => {
+                                    this.client = user;
+                                    console.log(this.client);
+                                    this.loadApp();
+                                });
                             });
                         });
-                    }, error => {
-                        console.log(error);
                     });
                 });
             });
@@ -252,13 +265,16 @@ var app = new Vue({
                 backgroundImageUrl: this.client.backgroundImageUrl,
                 localMessageColor: this.client.localMessageColor,
                 favoriteUsers: this.client.favoriteUsers,
-                blockedUsers: this.client.blockedUsers
+                blockedUsers: this.client.blockedUsers,
+                lastConnection: this.client.lastConnection
             }).then(client => {
                 this.client = client;
                 localStorage.setItem('client', JSON.stringify(this.client));
             });
         },
         signOut: function () {
+            this.client.lastConnection = moment().utc();
+            this.saveClientUser();
             localStorage.removeItem('client');
             localStorage.removeItem('feathers-jwt');
             this.client = null;
@@ -400,16 +416,22 @@ var app = new Vue({
                 Notification.requestPermission();
             }
             if (Notification.permission === 'granted') {
-                var notification = new Notification(options.user, { body: options.body, icon: options.icon});
+                var notification = new Notification(options.user, { body: options.body, icon: options.icon });
             }
+        },
+        getGeoLocation: function () {
+            return fetch('http://freegeoip.net/json/');
         }
     },
     filters: {
         momentTimestamp: function (date) {
-            return moment(date).local().format("LT")
+            return moment(date).local().format("LT");
         },
         momentDateSeparator: function (date) {
-            return moment(date).local().format("dddd Do MMMM")
+            return moment(date).local().format("dddd Do MMMM");
+        },
+        momentLastConnection: function (date) {
+            return moment(date).local().format("LLL");
         }
     },
 

@@ -343,7 +343,14 @@ $mobile: "only screen and (max-width : 800px)";
 
                     .user-modifiers{
                         .user-favorite{
-                            font-size: $icon-font-size;
+                            font-size: 1.3em;
+                            position: absolute;
+                            right: 12px;
+                            top: 30px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            color: $brand-color-dark;
                         }
                     }
 
@@ -524,10 +531,10 @@ $mobile: "only screen and (max-width : 800px)";
                         }
 
                         .button{
-                            width: 80%;
+                            width: 90%;
                             padding: $light-padding;
                             font-size: $slider-input-font-size;
-                            background-color: $brand-color;
+                            background-color: $brand-color-dark;
                             color: $white;
                             border-radius: $light-border-radius;
                             border: none;
@@ -536,6 +543,7 @@ $mobile: "only screen and (max-width : 800px)";
                             &:hover{
                                 cursor: pointer;
                                 box-shadow: $light-box-shadow;
+                                background-color: $brand-color;
                             }
 
                             &:active{
