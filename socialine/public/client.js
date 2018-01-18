@@ -92,23 +92,21 @@ var app = new Vue({
                 this.clientMessages = messages.data;
             });
             messagesService.on('created', message => {
+
                 if (message.sender == this.client._id || message.receiver == this.client._id) {
-                    console.log('Realtime user message', message);
                     this.clientMessages.unshift(message);
-                    console.log(message.sender, this.selectedUser._id)
-                    if (message.sender == this.selectedUser._id && message.receiver == this.client._id) {
-                        this.setMessageRead(message._id);
-                    }
                     if (message.receiver == this.client._id) {
                         this.unreadMessages++;
-                        this.documentTitleNotification(this.unreadMessages);
                     }
-                    console.log('hasfocus', document.hasFocus())
-                    if (!document.hasFocus() && message.receiver == this.client._id) {
+                    this.documentTitleNotification(this.unreadMessages);
+                    if (document.hasFocus()) {
+                        if (message.sender == this.selectedUser._id && message.receiver == this.client._id) {
+                            this.setMessageRead(message._id);
+                        }
+                    } else if (message.receiver == this.client._id) {
                         usersService.get(message.sender).then(user => {
                             this.desktopNotification({ user: user.name, body: message.text, icon: user.pictureUrl });
                         });
-
                     }
                 }
             });
@@ -123,6 +121,13 @@ var app = new Vue({
             window.addEventListener('beforeunload', event => {
                 this.client.lastConnection = moment().utc();
                 this.saveClientUser();
+            });
+            window.addEventListener('focus', event => {
+                if (this.selectedUser != null) {
+                    this.clientMessages.filter(message => { return message.receiver == this.client._id && message.sender == this.selectedUser._id && !message.readByReceiver }).forEach(message => {
+                        this.setMessageRead(message._id);
+                    });
+                }
             });
             this.getGeoLocation().then(result => {
                 result.json().then(json => {
@@ -391,7 +396,7 @@ var app = new Vue({
                 img.src = url;
             });
         },
-        isUrl: function (string) {
+        isUrl: function (string) { // THIS IS TOO PERFORMANCE HEAVY
             var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
                 '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name and extension
                 '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
