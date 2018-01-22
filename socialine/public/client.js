@@ -42,9 +42,6 @@ var app = new Vue({
             });
         }
     },
-    mounted: function () {
-
-    },
     updated: function () {
         //console.log('updated');
         // TO BE ADDED (IF SO IT ONLY DOES IT PROPERLY)
@@ -213,16 +210,8 @@ var app = new Vue({
                             usersService.create({
                                 accountId: account._id,
                                 name: this.signupName,
-                                pictureUrl: "https://pbs.twimg.com/media/CLI0ZQmUkAA9int.png",
-                                about: "Hey there, I'm using Socialine",
-                                lastConnection: "online",
                                 latitude: latitude,
                                 longitude: longitude,
-                                maxKmDistance: 15,
-                                backgroundImageUrl: 'https://wallpaperscraft.com/image/giau_pass_italy_alps_118374_3840x2400.jpg',
-                                blockedUsers: [],
-                                favoriteUsers: [],
-                                localMessageColor: '#ffcac9'
                             }).then(user => {
                                 console.log('user', user);
                                 console.log('this.client', this.client);
@@ -263,6 +252,7 @@ var app = new Vue({
         },
         saveClientUser: function () {
             usersService.patch(this.client._id, {
+                accountId: this.client.accountId,
                 pictureUrl: this.client.pictureUrl,
                 name: this.client.name,
                 about: this.client.about,
