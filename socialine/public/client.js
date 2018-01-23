@@ -89,7 +89,7 @@ var app = new Vue({
                 this.clientMessages = messages.data;
             });
             messagesService.on('created', message => {
-
+                console.log('message created');
                 if (message.sender == this.client._id || message.receiver == this.client._id) {
                     this.clientMessages.unshift(message);
                     if (message.receiver == this.client._id) {

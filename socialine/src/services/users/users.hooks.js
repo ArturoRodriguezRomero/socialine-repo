@@ -24,9 +24,7 @@ module.exports = {
     }],
     update: [],
     patch: [context => {
-      console.log('patch');
       if(context.params.payload.accountId == context.data.accountId){
-        console.log('es el mismo');
         return context;
       }
     }],
