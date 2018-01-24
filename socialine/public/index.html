@@ -61,9 +61,6 @@
                 <div class="input-title">Image</div>
                 <div class="input-row">
                   <input class="textbox" type="text" name="" id="sliderImageInput" v-model="client.pictureUrl" maxlength="300">
-                  <!--div class="action-button" v-on:click="focusInput('sliderImageInput')">
-                    <i class="fas fa-pencil-alt"></i>
-                  </div-->
                 </div>
                 <!--div class="input-row">
                   <input type="file" name="" id="">
@@ -73,18 +70,12 @@
                 <div class="input-title">Name</div>
                 <div class="input-row">
                   <input class="textbox" type="text" name="" id="sliderNameInput" v-model="client.name" maxlength="20">
-                  <!--div class="action-button" v-on:click="focusInput('sliderNameInput')">
-                    <i class="fas fa-pencil-alt"></i>
-                  </div-->
                 </div>
               </div>
               <div class="input-wrapper">
                 <div class="input-title">About</div>
                 <div class="input-row">
                   <input class="textbox" type="text" name="" id="sliderAboutInput" v-model="client.about" maxlength="30">
-                  <!--div class="action-button" v-on:click="focusInput('sliderAboutInput')">
-                    <i class="fas fa-pencil-alt"></i>
-                  </div-->
                 </div>
               </div>
               <div class="input-wrapper">
@@ -266,22 +257,10 @@
     </div>
   </div>
 </body>
-
-<!--script>
-  document.addEventListener("DOMContentLoaded", function (event) {
-    console.log("DOM fully loaded and parsed");
-  });
-  window.addEventListener("load", function(event) {
-    console.log("All resources finished loading!");
-  });
-</script-->
-
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="//unpkg.com/@feathersjs/client@^3.0.0/dist/feathers.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.js"></script>
-<!--script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script-->
 <link href="https://use.fontawesome.com/releases/v5.0.2/css/all.css" rel="stylesheet">
 <script src="client.js"></script>
-
 </html>

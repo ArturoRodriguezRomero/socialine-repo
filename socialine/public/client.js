@@ -1,11 +1,7 @@
-// Establish a Socket.io connection
 const socket = io();
-// Initialize our Feathers client application through Socket.io
-// with hooks and authentication.
 const client = feathers();
 
 client.configure(feathers.socketio(socket));
-// Use localStorage to store our login token
 client.configure(feathers.authentication({
     storage: window.localStorage
 }));
@@ -35,7 +31,6 @@ var app = new Vue({
     },
     created: function () {
         if (localStorage.getItem('feathers-jwt') && localStorage.getItem('client')) {
-            console.log(localStorage.getItem('feathers-jwt'));
             client.authenticate({ strategy: 'jwt', accessToken: localStorage.getItem('feathers-jwt') }).then(() => {
                 this.client = JSON.parse(localStorage.getItem('client'));
                 this.loadApp();
@@ -43,7 +38,6 @@ var app = new Vue({
         }
     },
     updated: function () {
-        //console.log('updated');
         // TO BE ADDED (IF SO IT ONLY DOES IT PROPERLY)
         this.scrollChatBody();
     },
@@ -58,16 +52,13 @@ var app = new Vue({
     methods: {
         loadApp: function () {
             usersService.find().then(users => {
-                console.log('Load', users.data);
                 this.users = users.data;
                 this.setSelectableImageUrl();
             });
             usersService.on('created', user => {
-                console.log('Realtime', user);
                 this.users.push(user);
             });
             usersService.on('patched', patchedUser => {
-                // TO BE REPLACED WITH VUE'S STOREX
                 this.users.splice(this.users.indexOf(this.users.find(user => { return user._id == patchedUser._id })), 1, patchedUser);
                 if (patchedUser._id == this.selectedUser._id) {
                     this.selectedUser = patchedUser;
@@ -85,11 +76,9 @@ var app = new Vue({
                     }
                 }
             }).then(messages => {
-                console.log(messages);
                 this.clientMessages = messages.data;
             });
             messagesService.on('created', message => {
-                console.log('message created');
                 if (message.sender == this.client._id || message.receiver == this.client._id) {
                     this.clientMessages.unshift(message);
                     if (message.receiver == this.client._id) {
@@ -108,13 +97,8 @@ var app = new Vue({
                 }
             });
             messagesService.on('patched', patchedMessage => {
-                // TO BE REPLACED WITH VUE'S STOREX
-                console.log('message patched')
                 this.clientMessages.splice(this.clientMessages.indexOf(this.clientMessages.find(message => { return message._id == patchedMessage._id })), 1, patchedMessage);
             });
-            this.getUnreadMessages();
-            this.client.lastConnection = 'online';
-            this.saveClientUser();
             window.addEventListener('beforeunload', event => {
                 this.client.lastConnection = moment().utc();
                 this.saveClientUser();
@@ -132,26 +116,18 @@ var app = new Vue({
                     this.client.longitude = json.longitude;
                 });
             });
+            this.getUnreadMessages();
+            this.client.lastConnection = 'online';
+            this.saveClientUser();
         },
         selectUser: function (user) {
-            console.log(user);
             this.selectedUser = user;
             this.toggleClass(this.$el.querySelector('.sidebar'), 'hidden');
-            this.toggleClass(this.$el.querySelector('.chat-wrapper'), 'visible'); receiverSettingsPanel
+            this.toggleClass(this.$el.querySelector('.chat-wrapper'), 'visible');
             this.$el.querySelector('#receiverSettingsPanel').classList.remove('expanded');
-            messagesService.find({
-                query: {
-                    sender: this.selectedUser._id,
-                    receiver: this.client._id,
-                    readByReceiver: false
-                }
-            }).then(unreadMessages => {
-                unreadMessages.data.forEach(message => {
-                    console.log('patched');
-                    this.setMessageRead(message._id);
-                });
-
-            })
+            this.clientMessages.filter(message => { return message.receiver == this.client._id && message.sender == this.selectedUser._id && !message.readByReceiver }).forEach(message => {
+                this.setMessageRead(message._id);
+            });
         },
         setMessageRead: function (id) {
             messagesService.patch(id, {
@@ -161,16 +137,10 @@ var app = new Vue({
             this.documentTitleNotification(this.unreadMessages);
         },
         getUnreadMessages: function () {
-            messagesService.find({
-                query: {
-                    receiver: this.client._id,
-                    readByReceiver: false
-                }
-            }).then(unreadMessages => {
-                this.unreadMessages = unreadMessages.data.length;
-                this.documentTitleNotification(unreadMessages.data.length);
-                return unreadMessages.data;
-            })
+            let unreadMessages = this.clientMessages.filter(message => { return message.receiver == this.client._id && message.sender == this.selectedUser._id && !message.readByReceiver });
+            this.unreadMessages = unreadMessages.length;
+            this.documentTitleNotification(unreadMessages.length);
+            return unreadMessages;
         },
         toggleSlidingPanel: function (slidingPanelClass) {
             this.toggleClass(this.$el.querySelector(`.${slidingPanelClass}`), 'visible');
@@ -196,12 +166,10 @@ var app = new Vue({
             if (this.signupUsername == '' || this.signupPassword == '' || this.signupConfirmPassword == '' || this.signupName == '') {
                 return;
             }
-            console.log('signup');
             accountsService.create({
                 username: this.signupUsername,
                 password: this.signupPassword
             }).then(account => {
-                console.log(account);
                 client.authenticate(Object.assign({ strategy: 'local' }, this.signUpCredentials)).then(resolve => {
                     this.getGeoLocation().then(result => {
                         result.json().then(json => {
@@ -213,11 +181,8 @@ var app = new Vue({
                                 latitude: latitude,
                                 longitude: longitude,
                             }).then(user => {
-                                console.log('user', user);
-                                console.log('this.client', this.client);
                                 client.authenticate(Object.assign({ strategy: 'local' }, this.signUpCredentials)).then(resolve => {
                                     this.client = user;
-                                    console.log(this.client);
                                     this.loadApp();
                                 });
                             });
@@ -227,7 +192,6 @@ var app = new Vue({
             });
         },
         login: function () {
-            console.log('login');
             // TO BE CHANGED TO SERVER-SIDE-BASED AUTHENTICATION
             client.authenticate(Object.assign({ strategy: 'local' }, this.logInCredentials)).then(token => {
                 client.authenticate().then(() => {
@@ -350,20 +314,8 @@ var app = new Vue({
             this.selectedUser = { name: '', pictureUrl: '', about: '', lastConnection: '' }
         },
         unblockAllUsers: function () {
-            console.log('unblock all')
             this.client.blockedUsers = [];
             this.saveClientUser();
-        },
-        isMomentAfter: function (date1, date2, type) {
-            console.log('isafter', moment(date1).isAfter(date2, type))
-            return moment(date1).isAfter(date2, type);
-        },
-        isMessageAfter: function (index, clientId, selectedUserId) {
-            let nextMessage = this.clientMessages.slice(index).find(item => {
-                return item.receiver == clientId && item.sender == selectedUserId || item.receiver == selectedUserId && item.sender == clientId;
-            });
-            console.log(nextMessage);
-            return nextMessage;
         },
         testImage: function (url, timeoutT) {
             return new Promise(function (resolve, reject) {
