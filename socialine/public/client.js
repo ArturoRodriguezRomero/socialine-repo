@@ -192,31 +192,14 @@ var app = new Vue({
             });
         },
         login: function () {
-            // TO BE CHANGED TO SERVER-SIDE-BASED AUTHENTICATION
-            client.authenticate(Object.assign({ strategy: 'local' }, this.logInCredentials)).then(token => {
-                client.authenticate().then(() => {
-                    accountsService.find({
-                        query: {
-                            username: this.logInCredentials.username,
-                            $limit: 1
-                        }
-                    }).then(result => {
-                        usersService.find({
-                            query: {
-                                accountId: result.data[0]._id
-                            }
-                        }).then(result => {
-                            this.client = result.data[0];
-                            this.loadApp();
-                            localStorage.setItem('client', JSON.stringify(this.client));
-                        });
-                    });
-                });
+            client.authenticate(Object.assign({ strategy: 'local' }, this.logInCredentials)).then(result => {
+                this.client = result.user;
+                this.loadApp();
+                localStorage.setItem('client', JSON.stringify(this.client));
             });
         },
         saveClientUser: function () {
             usersService.patch(this.client._id, {
-                accountId: this.client.accountId,
                 pictureUrl: this.client.pictureUrl,
                 name: this.client.name,
                 about: this.client.about,
@@ -233,7 +216,6 @@ var app = new Vue({
         },
         signOut: function () {
             this.client.lastConnection = moment().utc();
-            this.saveClientUser();
             localStorage.removeItem('client');
             localStorage.removeItem('feathers-jwt');
             this.client = null;

@@ -24,9 +24,6 @@ module.exports = {
     }],
     update: [],
     patch: [context => {
-      if(context.params.payload.accountId == context.data.accountId){
-        return context;
-      }
     }],
     remove: []
   },

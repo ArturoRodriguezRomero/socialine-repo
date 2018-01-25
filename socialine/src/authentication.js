@@ -24,6 +24,29 @@ module.exports = function (app) {
       remove: [
         authentication.hooks.authenticate('jwt')
       ]
+    },
+    after: {
+      all: [],
+      find: [],
+      get: [],
+      create: [
+        async function (context) {
+          var users = await app.service('users').find({
+            query: {
+              accountId: context.params.payload.accountId
+            }
+          });
+          context.result = {
+            strategy: context.data.strategy,
+            accessToken: context.result.accessToken,
+            user: users.data[0]
+          }
+          return context;
+        }
+      ],
+      update: [],
+      patch: [],
+      remove: []
     }
   });
 };
