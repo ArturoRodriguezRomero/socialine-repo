@@ -301,35 +301,9 @@ var app = new Vue({
             this.client.blockedUsers = [];
             this.saveClientUser();
         },
-        testImage: function (url, timeoutT) {
-            return new Promise(function (resolve, reject) {
-                var timeout = timeoutT || 5000;
-                var timer, img = new Image();
-                img.onerror = img.onabort = function () {
-                    clearTimeout(timer);
-                    reject("error");
-                };
-                img.onload = function () {
-                    clearTimeout(timer);
-                    resolve("success");
-                };
-                timer = setTimeout(function () {
-                    // reset .src to invalid URL so it stops previous
-                    // loading, but doesn't trigger new load
-                    img.src = "//!!!!/test.jpg";
-                    reject("timeout");
-                }, timeout);
-                img.src = url;
-            });
-        },
-        isUrl: function (string) { // THIS IS TOO PERFORMANCE HEAVY
-            var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
-                '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name and extension
-                '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-                '(\\:\\d+)?' + // port
-                '(\\/[-a-z\\d%@_.~+&:]*)*' + // path
-                '(\\?[;&a-z\\d%@_.,~+&:=-]*)?' + // query string
-                '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+        isUrl: function (string) {
+            let expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+            let pattern = new RegExp(expression);
             return pattern.test(string);
         },
         isImageUrl: function (string) {
