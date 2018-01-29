@@ -23,8 +23,7 @@ module.exports = {
       return context;
     }],
     update: [],
-    patch: [context => {
-    }],
+    patch: [],
     remove: []
   },
 

@@ -21,7 +21,9 @@ module.exports = function (app) {
       app.channel('anonymous').leave(connection);
 
       // Add it to the authenticated user channel
-      //app.channel('authenticated').join(connection);
+      app.channel('authenticated').join(connection);
+
+      console.log('Authenticated User connected');
 
       // Channels can be named anything and joined on any condition 
 
@@ -56,12 +58,11 @@ module.exports = function (app) {
     return app.channel('authenticated');
   });
 
-  // TO BE REMOVED
-  /*app.publish((data, hook) => {
-    console.log('Publishing all events to all anonymous users.'); // eslint-disable-line
 
-    return app.channel('anonymous');
-  });*/
+  app.service('users').publish((data, hook) => {
+    console.log('Publishing all users to all authenticated users')
+    return app.channel('authenticated');
+  });
 
   // Here you can also add service specific event publishers
   // e..g the publish the `users` service `created` event to the `admins` channel

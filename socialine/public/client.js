@@ -60,6 +60,7 @@ var app = new Vue({
             });
             usersService.on('patched', patchedUser => {
                 this.users.splice(this.users.indexOf(this.users.find(user => { return user._id == patchedUser._id })), 1, patchedUser);
+                console.log('user patched');
                 if (patchedUser._id == this.selectedUser._id) {
                     this.selectedUser = patchedUser;
                 }
@@ -100,6 +101,7 @@ var app = new Vue({
                 this.clientMessages.splice(this.clientMessages.indexOf(this.clientMessages.find(message => { return message._id == patchedMessage._id })), 1, patchedMessage);
             });
             window.addEventListener('beforeunload', event => {
+                alert('beforeunload');
                 this.client.lastConnection = moment().utc();
                 this.saveClientUser();
             });
@@ -199,6 +201,7 @@ var app = new Vue({
             });
         },
         saveClientUser: function () {
+            localStorage.setItem('client', JSON.stringify(this.client));
             usersService.patch(this.client._id, {
                 pictureUrl: this.client.pictureUrl,
                 name: this.client.name,
@@ -210,8 +213,7 @@ var app = new Vue({
                 blockedUsers: this.client.blockedUsers,
                 lastConnection: this.client.lastConnection
             }).then(client => {
-                this.client = client;
-                localStorage.setItem('client', JSON.stringify(this.client));
+                //this.client = client;
             });
         },
         signOut: function () {
