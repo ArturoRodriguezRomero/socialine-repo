@@ -14,7 +14,7 @@ module.exports = {
         lastConnection: "online",
         latitude: context.data.latitude,
         longitude: context.data.longitude,
-        maxKmDistance: 15,
+        maxKmDistance: 25,
         backgroundImageUrl: 'https://wallpaperscraft.com/image/giau_pass_italy_alps_118374_3840x2400.jpg',
         blockedUsers: [],
         favoriteUsers: [],
