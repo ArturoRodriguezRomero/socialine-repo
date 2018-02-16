@@ -43,7 +43,7 @@
                     <i class="fas fa-heart"></i>
                   </div>
                 </div>
-                <div class="user-new-message" v-if="clientMessages.find(message => {return message.receiver == client._id && message.sender == user._id && !message.readByReceiver })">{{clientMessages.filter(message => {return message.receiver == client._id && message.sender == user._id &&
+                <div class="user-new-message" v-if="clientMessages.find(message => {return !client.blockedUsers.includes(user) && message.receiver == client._id && message.sender == user._id && !message.readByReceiver })">{{clientMessages.filter(message => {return !client.blockedUsers.includes(user) && message.receiver == client._id && message.sender == user._id &&
                   !message.readByReceiver }).length}}</div>
               </div>
             </div>

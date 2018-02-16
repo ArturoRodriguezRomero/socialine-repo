@@ -80,7 +80,7 @@ var app = new Vue({
                 this.clientMessages = messages.data;
             });
             messagesService.on('created', message => {
-                if (message.sender == this.client._id || message.receiver == this.client._id) {
+                if ((message.sender == this.client._id || message.receiver == this.client._id) && !this.client.blockedUsers.includes(message.sender)) {
                     this.clientMessages.unshift(message);
                     if (message.receiver == this.client._id) {
                         this.unreadMessages++;
