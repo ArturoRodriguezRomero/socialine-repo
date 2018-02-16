@@ -848,6 +848,12 @@ $mobile: "only screen and (max-width : 800px)";
 
                     .text{
                         font-size: $message-text-font-size-desktop;
+                        overflow-wrap: break-word;
+                        word-wrap: break-word;
+                        -webkit-hyphens: auto;
+                        -ms-hyphens: auto;
+                        -moz-hyphens: auto;
+                        hyphens: auto;
 
                         @media #{$mobile}{
                             font-size: $message-text-font-size-mobile;
@@ -856,7 +862,12 @@ $mobile: "only screen and (max-width : 800px)";
 
                     .link{
                         position: relative;
-                        word-break: break-all;
+                        overflow-wrap: break-word;
+                        word-wrap: break-word;
+                        -webkit-hyphens: auto;
+                        -ms-hyphens: auto;
+                        -moz-hyphens: auto;
+                        hyphens: auto;
                     }
 
                     .timestamp{

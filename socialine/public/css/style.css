@@ -602,7 +602,13 @@
   text-align: center; }
 
 .main-panel .chat-wrapper .chat-body .chat .message .text {
-  font-size: 1.1em; }
+  font-size: 1.1em;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto; }
 
 @media only screen and (max-width: 800px) {
   .main-panel .chat-wrapper .chat-body .chat .message .text {
@@ -610,7 +616,12 @@
 
 .main-panel .chat-wrapper .chat-body .chat .message .link {
   position: relative;
-  word-break: break-all; }
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto; }
 
 .main-panel .chat-wrapper .chat-body .chat .message .timestamp {
   font-size: 0.8em;
