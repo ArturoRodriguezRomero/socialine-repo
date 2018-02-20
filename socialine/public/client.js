@@ -166,6 +166,7 @@ var app = new Vue({
         },
         signUp: function () {
             if (this.signupUsername == '' || this.signupPassword == '' || this.signupConfirmPassword == '' || this.signupName == '') {
+                alert("Fill all the required textboxes.");
                 return;
             }
             accountsService.create({
@@ -198,6 +199,8 @@ var app = new Vue({
                 this.client = result.user;
                 this.loadApp();
                 localStorage.setItem('client', JSON.stringify(this.client));
+            }).catch(error => {
+                alert("Username or Password Incorrect.");
             });
         },
         saveClientUser: function () {

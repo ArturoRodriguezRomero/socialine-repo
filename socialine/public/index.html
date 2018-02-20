@@ -192,7 +192,7 @@
           </div>
           <div class="chat-input">
             <input class="textbox" v-model.trim="messageInput" v-on:keydown.enter="sendMessage" v-on:focus="scrollChatBody" :disabled="selectedUser._id == undefined"
-              type="text" name="" id="messageInput" :placeholder="selectedUser._id == undefined ? 'Select a contact first...' : 'Write your message here...'">
+              type="text" name="" id="messageInput" :placeholder="selectedUser._id == undefined ? 'Select a contact first...' : 'Write your message here...'" maxlength="500">
             <button class="action-button" v-on:click="sendMessage" :disabled="selectedUser._id == undefined">
               <span>
                 <i class="fas fa-arrow-alt-circle-right"></i>
@@ -220,7 +220,7 @@
               </div>
               <div class="row">
                 <div class="label">Password</div>
-                <input type="password" name="" id="loginPassword" v-model.trim="loginPassword" class="textbox">
+                <input type="password" name="" id="loginPassword" v-model.trim="loginPassword" class="textbox" v-on:keydown.enter="login">
               </div>
               <button class="action-button" v-on:click="login">
                 <div class="title">Log In</div>
@@ -229,21 +229,21 @@
             </div>
             <div id="signupLog" class="log signup" v-bind:class="[selectedLogSelector == 'signupLog' ? 'visible': '']">
               <div class="row">
-                <div class="label">Username</div>
+                <div class="label">Username*</div>
                 <input type="text" name="" id="signupUsername" v-model.trim="signupUsername" class="textbox">
                 <div class="tip">This is the name of your account, you will use it to sign in. Nobody will see it.</div>
               </div>
               <div class="row">
-                <div class="label">Password</div>
+                <div class="label">Password*</div>
                 <input type="password" name="" id="signupPassword" v-model.trim="signupPassword" class="textbox">
               </div>
               <div class="row">
-                <div class="label">Confirm password</div>
+                <div class="label">Confirm password*</div>
                 <input type="password" name="" id="signupConfirmPassword" v-model.trim="signupConfirmPassword" class="textbox">
               </div>
               <div class="row">
-                <div class="label">Name</div>
-                <input type="text" name="" id="signupName" v-model.trim="signupName" class="textbox">
+                <div class="label">Name*</div>
+                <input type="text" name="" id="signupName" v-model.trim="signupName" class="textbox" v-on:keydown.enter="signup">
                 <div class="tip">This is the name other users will see. You can always change it.</div>
               </div>
               <button class="action-button" v-on:click="signUp">
