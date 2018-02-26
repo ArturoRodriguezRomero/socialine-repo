@@ -31,8 +31,7 @@
           </div>
           <div class="sidebar-body">
             <div class="user-list scrollbar">
-              <div class="user-item" v-for="user in users" v-if="user._id != client._id && kmBetweenLocations(client.latitude, user.latitude, client.longitude, user.longitude) < client.maxKmDistance && kmBetweenLocations(client.latitude, user.latitude, client.longitude, user.longitude) < user.maxKmDistance && !client.blockedUsers.includes(user._id)"
-                v-on:click="selectUser(user)" v-bind:class="[user._id == selectedUser._id ? 'selected': '']">
+              <div class="user-item" v-for="user in users" v-if="isUserValid(user)" v-on:click="selectUser(user)" v-bind:class="[user._id == selectedUser._id ? 'selected': '']">
                 <div class="user-picture" v-bind:style="{'background-image' : 'url(' + user.pictureUrl +')'}"></div>
                 <div class="user-body">
                   <div class="user-name">{{user.name}}</div>
@@ -43,8 +42,8 @@
                     <i class="fas fa-heart"></i>
                   </div>
                 </div>
-                <div class="user-new-message" v-if="clientMessages.find(message => {return !client.blockedUsers.includes(user) && message.receiver == client._id && message.sender == user._id && !message.readByReceiver })">{{clientMessages.filter(message => {return !client.blockedUsers.includes(user) && message.receiver == client._id && message.sender == user._id &&
-                  !message.readByReceiver }).length}}</div>
+                <div class="user-new-message" v-if="isNewMessage(user)">
+                  {{getNewMessagesAmount(user)}}</div>
               </div>
             </div>
           </div>
@@ -165,8 +164,8 @@
           </div>
           <div class="chat-body scrollbar">
             <div class="chat">
-              <div class="message" v-for="(message, index) in clientMessages.slice().reverse()" v-if="message.sender == selectedUser._id && message.receiver == client._id || message.sender == client._id && message.receiver == selectedUser._id"
-                v-bind:class="[message.sender == client._id ? 'local': 'foreign']" v-bind:style="{ 'background-color': message.sender == client._id ? client.localMessageColor : null, 'border-color': message.sender == client._id ? client.localMessageColor : null  }">
+              <div class="message" v-for="(message, index) in clientMessages.slice().reverse()" v-if="isMessageValid(message)" v-bind:class="[message.sender == client._id ? 'local': 'foreign']"
+                v-bind:style="{ 'background-color': message.sender == client._id ? client.localMessageColor : null, 'border-color': message.sender == client._id ? client.localMessageColor : null  }">
                 <a class="link" v-if="isUrl(message.text) && isImageUrl(message.text)" :href="message.text" target="_blank">
                   <img class="image" :src="message.text"></img>
                 </a>
@@ -192,7 +191,8 @@
           </div>
           <div class="chat-input">
             <input class="textbox" v-model.trim="messageInput" v-on:keydown.enter="sendMessage" v-on:focus="scrollChatBody" :disabled="selectedUser._id == undefined"
-              type="text" name="" id="messageInput" :placeholder="selectedUser._id == undefined ? 'Select a contact first...' : 'Write your message here...'" maxlength="500">
+              type="text" name="" id="messageInput" :placeholder="selectedUser._id == undefined ? 'Select a contact first...' : 'Write your message here...'"
+              maxlength="500">
             <button class="action-button" v-on:click="sendMessage" :disabled="selectedUser._id == undefined">
               <span>
                 <i class="fas fa-arrow-alt-circle-right"></i>
@@ -263,4 +263,5 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.js"></script>
 <link href="https://use.fontawesome.com/releases/v5.0.2/css/all.css" rel="stylesheet">
 <script src="client.js"></script>
+
 </html>

@@ -60,7 +60,6 @@ var app = new Vue({
             });
             usersService.on('patched', patchedUser => {
                 this.users.splice(this.users.indexOf(this.users.find(user => { return user._id == patchedUser._id })), 1, patchedUser);
-                console.log('user patched');
                 if (patchedUser._id == this.selectedUser._id) {
                     this.selectedUser = patchedUser;
                 }
@@ -78,6 +77,7 @@ var app = new Vue({
                 }
             }).then(messages => {
                 this.clientMessages = messages.data;
+                this.getUnreadMessages();
             });
             messagesService.on('created', message => {
                 if ((message.sender == this.client._id || message.receiver == this.client._id) && !this.client.blockedUsers.includes(message.sender)) {
@@ -118,7 +118,6 @@ var app = new Vue({
                     this.client.longitude = json.longitude;
                 });
             });
-            this.getUnreadMessages();
             this.client.lastConnection = 'online';
             this.saveClientUser();
         },
@@ -139,10 +138,9 @@ var app = new Vue({
             this.documentTitleNotification(this.unreadMessages);
         },
         getUnreadMessages: function () {
-            let unreadMessages = this.clientMessages.filter(message => { return message.receiver == this.client._id && message.sender == this.selectedUser._id && !message.readByReceiver });
-            this.unreadMessages = unreadMessages.length;
-            this.documentTitleNotification(unreadMessages.length);
-            return unreadMessages;
+            this.unreadMessages = this.clientMessages.filter(message => { return message.receiver == this.client._id && !message.readByReceiver }).length;
+            this.documentTitleNotification(this.unreadMessages);
+            return this.unreadMessages;
         },
         toggleSlidingPanel: function (slidingPanelClass) {
             this.toggleClass(this.$el.querySelector(`.${slidingPanelClass}`), 'visible');
@@ -316,7 +314,7 @@ var app = new Vue({
             if (number <= 0) {
                 document.title = `Socialine`;
             } else {
-                document.title = `Socialine (${number})`;
+                document.title = `(${number}) Socialine`;
             }
         },
         desktopNotification: function (options) {
@@ -329,6 +327,21 @@ var app = new Vue({
         },
         getGeoLocation: function () {
             return fetch('http://freegeoip.net/json/');
+        },
+        isUserValid: function (user) {
+            return user._id != this.client._id && 
+            this.kmBetweenLocations(this.client.latitude, user.latitude, this.client.longitude, user.longitude) < this.client.maxKmDistance && 
+            this.kmBetweenLocations(this.client.latitude, user.latitude, this.client.longitude, user.longitude) < user.maxKmDistance && 
+            !this.client.blockedUsers.includes(user._id);
+        },
+        isNewMessage: function (user) {
+            return this.clientMessages.find(message => {return !this.client.blockedUsers.includes(user) && message.receiver == this.client._id && message.sender == user._id && !message.readByReceiver });
+        },
+        getNewMessagesAmount: function (user) {
+            return this.clientMessages.filter(message => {return !this.client.blockedUsers.includes(user) && message.receiver == this.client._id && message.sender == user._id && !message.readByReceiver }).length
+        },
+        isMessageValid: function (message) {
+            return message.sender == this.selectedUser._id && message.receiver == this.client._id || message.sender == this.client._id && message.receiver == this.selectedUser._id;
         }
     },
     filters: {

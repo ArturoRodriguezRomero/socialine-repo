@@ -818,9 +818,7 @@ $mobile: "only screen and (max-width : 800px)";
                     .image{
                         position: relative;
                         width: fit-content;
-                        max-width: 300px;
-                        min-height: 50px;
-                        min-width: 150px;
+                        width: 100%;
 
                         &::before {  
                             content: "";
