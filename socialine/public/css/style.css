@@ -576,7 +576,10 @@
 .main-panel .chat-wrapper .chat-body .chat .message .image {
   position: relative;
   width: fit-content;
-  width: 100%; }
+  min-height: 200px;
+  min-width: 200px;
+  width: 100%;
+  height: auto; }
 
 .main-panel .chat-wrapper .chat-body .chat .message .image::before {
   content: "";

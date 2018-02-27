@@ -147,7 +147,7 @@
             <div class="hide-chat" v-on:click="hideChat">
               <i class="fas fa-angle-left"></i>
             </div>
-            <div class="receiver-picture" v-bind:style="{ 'background-image': 'url(' + selectedUser.pictureUrl + ')' }"></div>
+            <a :href="selectedUser.pictureUrl" target="_blank" class="receiver-picture" v-bind:style="{ 'background-image': 'url(' + selectedUser.pictureUrl + ')' }"></a>
             <div class="receiver-body">
               <div class="receiver-name">{{selectedUser.name}}</div>
               <div class="receiver-last-connection" v-if="selectedUser.lastConnection == 'online'">{{selectedUser.lastConnection}}</div>

@@ -125,6 +125,9 @@ $chat-header-height: $sidebar-header-height;
 $chat-input-height: $chat-header-height;
 $chat-input-height-mobile: 45px;
 
+$chat-message-min-height: 200px;
+$chat-message-min-width: 200px;
+
 $splash-logo-height: 100px;
 $splash-logo-width: 100px;
 
@@ -818,7 +821,10 @@ $mobile: "only screen and (max-width : 800px)";
                     .image{
                         position: relative;
                         width: fit-content;
+                        min-height: $chat-message-min-height;
+                        min-width: $chat-message-min-width;
                         width: 100%;
+                        height: auto;
 
                         &::before {  
                             content: "";

@@ -39,7 +39,10 @@ var app = new Vue({
     },
     updated: function () {
         // TO BE ADDED (IF SO IT ONLY DOES IT PROPERLY)
-        this.scrollChatBody();
+        //this.scrollChatBody();
+        this.$nextTick(function () {
+            this.scrollChatBody();
+        });
     },
     computed: {
         signUpCredentials: function () {
@@ -129,6 +132,7 @@ var app = new Vue({
             this.clientMessages.filter(message => { return message.receiver == this.client._id && message.sender == this.selectedUser._id && !message.readByReceiver }).forEach(message => {
                 this.setMessageRead(message._id);
             });
+            this.messageInput = '';
         },
         setMessageRead: function (id) {
             messagesService.patch(id, {
@@ -219,6 +223,7 @@ var app = new Vue({
         },
         signOut: function () {
             this.client.lastConnection = moment().utc();
+            this.saveClientUser();
             localStorage.removeItem('client');
             localStorage.removeItem('feathers-jwt');
             this.client = null;
